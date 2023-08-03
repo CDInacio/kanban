@@ -1,22 +1,15 @@
 "use client";
 
-import { StyledEngineProvider } from "@mui/material/styles";
+import { QueryClient, QueryClientProvider } from "react-query";
+
 import type { Metadata } from "next";
 
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#1976d2", // Defina aqui a cor azul que deseja para o botão primary
-    },
-  },
-});
-
 const inter = Inter({ subsets: ["latin"] });
+const queryClient = new QueryClient();
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,12 +25,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              {children}
-            </ThemeProvider>
-          </StyledEngineProvider>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
         </SessionProvider>
       </body>
     </html>

@@ -1,52 +1,64 @@
 "use client";
-import { useSession } from "next-auth/react";
+import TextInput from "@/components/Forms/TextInput";
+import { Card } from "@chakra-ui/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
-import { Button, Divider, TextField, Typography } from "@mui/material";
-import Card from "@mui/material/Card";
-import { signIn } from "next-auth/react";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { FaFacebookF } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 const Signin = () => {
+  const [show, setShow] = useState(false);
   const { data: session, status } = useSession();
+
+  const handleClick = () => setShow(!show);
+
   const router = useRouter();
-  console.log(session);
+
   useEffect(() => {
     if (status === "authenticated") {
       router.push("/home");
     }
   }, [status]);
 
+  const handleLogin = (provider: string) => {
+    signIn(provider, { callbackUrl: "/home" });
+  };
+
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
-      <Card className=" w-[400px] px-[30px] py-[50px]">
-        <Button
-          onClick={() => signIn("google", { callbackUrl: "/home" })}
-          variant="outlined"
-          className="w-full"
-        >
-          Entrar com o Google
-        </Button>
-        <Divider className="my-[20px]" />
-        <Typography variant="body1" className="text-center">
-          Entrar com email/senha
-        </Typography>
-        <div className="flex flex-col">
-          <TextField
-            id="outlined-basic"
-            label="Email"
-            variant="outlined"
-            className="my-[10px]"
+      <Card className="w-[500px] bg-white shadow-md p-[20px] rounded-sm">
+        <h2 className="text-3xl font-bold text-neutral-800 text-center mb-[40px]">
+          Login
+        </h2>
+        <form className="flex flex-col">
+          <TextInput className="mb-[10px]" placeholder="Email" type="email" />
+          <TextInput
+            className="mb-[10px]"
+            placeholder="Senha"
+            type="password"
           />
-          <TextField id="outlined-basic" label="Senha" variant="outlined" />
+          <button className="bg-neutral-800 py-[10px] rounded-sm text-white hover:bg-neutral-900 transition ease-out duration-300">
+            Entrar
+          </button>
+        </form>
+        <div className="relative flex items-center py-5">
+          <div className="flex-grow border-t border-gray-400"></div>
+          <span className="flex-shrink mx-4 text-gray-400">ou entre com</span>
+          <div className="flex-grow border-t border-gray-400"></div>
         </div>
-        <Button
-          variant="contained"
-          className="w-full mt-[10px] bg-sky-600 hover:bg-sky-700"
-          type="submit"
-        >
-          Entrar
-        </Button>
+        <div>
+          <div className="mb-[10px] flex bg-blue-700 hover:bg-blue-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]">
+            <FaFacebookF size={25} />
+            <span className="ml-[10px]">Entrar com Facebook</span>
+          </div>
+          <div
+            onClick={() => handleLogin("google")}
+            className="flex  text-neutral-600 justify-center items-center rounded-sm border-[1px] border-neutral-300 py-[10px] cursor-pointer hover:bg-neutral-100 transition ease-out duration-300"
+          >
+            <FcGoogle size={25} />
+            <span className="ml-[10px]">Entrar com Google</span>
+          </div>
+        </div>
       </Card>
     </div>
   );

@@ -1,23 +1,21 @@
 "use client";
+import Nav from "@/components/nav/Nav";
+import useGetTasks from "@/queries/usegetTasks";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const Home = () => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  console.log(session);
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/signin");
-    }
-  }, [status]);
+  const { data: session } = useSession();
+  const data = useGetTasks();
 
-  const handleSignout = () => {
+  const handleLogout = () => {
     signOut();
   };
-
-  return <div onClick={handleSignout}>sair</div>;
+  return (
+    <>
+      <Nav />
+      <p onClick={handleLogout}>sair</p>
+    </>
+  );
 };
 
 export default Home;

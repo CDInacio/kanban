@@ -1,3 +1,4 @@
+import connectToDatabase from "@/lib/db";
 import type { NextAuthOptions } from "next-auth";
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
@@ -9,9 +10,27 @@ export const OPTIONS: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ""
         })
     ],
-    // pages: {
-    //     signIn: '/auth/signin',
-    // }
+    callbacks: {
+        async signIn({ profile }) {
+            try {
+                const db = await connectToDatabase()
+                const user = await db.collection('users').findOne({ email: profile?.email })
+
+                if (!user) {
+                    const newUser = {
+                        name: profile?.name,
+                        email: profile?.email,
+                        image: profile?.picture,
+                    }
+                    await db.collection('users').insertOne(newUser)
+                }
+                return true;
+            } catch (error) {
+                console.log(error)
+                return false
+            }
+        }
+    }
 }
 
 const handler = NextAuth(OPTIONS)
