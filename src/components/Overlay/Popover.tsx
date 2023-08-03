@@ -27,7 +27,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
         ...prev,
         { tagName: inputValue, id: Math.floor(Math.random() * 1000) },
       ]);
-      (e.target as HTMLInputElement).value = "";
+      (e.target as HTMLInputElement).value = "das";
     }
   };
 
