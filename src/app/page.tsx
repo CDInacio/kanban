@@ -14,7 +14,7 @@ export default function Home() {
   const handleSignOut = () => {
     signOut();
   };
-
+  console.log("first");
   return (
     <main className="mt-10">
       {!session ? (

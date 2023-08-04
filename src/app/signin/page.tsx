@@ -3,7 +3,7 @@ import TextInput from "@/components/Forms/TextInput";
 import { Card } from "@chakra-ui/react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 const Signin = () => {
@@ -14,11 +14,11 @@ const Signin = () => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/home");
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     router.push("/home");
+  //   }
+  // }, [status]);
 
   const handleLogin = (provider: string) => {
     signIn(provider, { callbackUrl: "/home" });

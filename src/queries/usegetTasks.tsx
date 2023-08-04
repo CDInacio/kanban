@@ -9,7 +9,9 @@ const getTasks = async () => {
 };
 
 const useGetTasks = () => {
-  return useQuery(["tasks"], getTasks);
+  return useQuery(["tasks"], getTasks, {
+    refetchOnWindowFocus: false,
+  });
 };
 
 export default useGetTasks;
