@@ -62,14 +62,15 @@ const TaskItem = ({
         <p className="text-neutral-400">
           {moment(createdAt).locale("pt").format("ll")}
         </p>
-        <div>
-          <BiComment size={20} />
+        <div className="flex items-center gap-[20px]">
           {responsable && (
             <Avatar
+              className="h-[35px] w-[35px]"
               image={userData?.image}
               alt="imagem do responsavel pela tareda"
             />
           )}
+          <BiComment size={20} />
         </div>
       </div>
       <hr className="mt-[20px]" />
