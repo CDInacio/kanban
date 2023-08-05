@@ -1,7 +1,17 @@
 import React from "react";
+import { twMerge } from "tailwind-merge";
 
-const Card = ({ children }: { children: React.ReactNode }) => {
-  return <div className="bg-white rounded p-[15px] mt-[20px]">{children}</div>;
+interface CardProps {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+const Card = ({ children, className }: CardProps) => {
+  return (
+    <div className={twMerge("bg-white rounded p-[15px] mt-[20px]", className)}>
+      {children}
+    </div>
+  );
 };
 
 export default Card;

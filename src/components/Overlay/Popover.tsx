@@ -1,26 +1,18 @@
 "use client";
 
+import { Itask } from "@/@types/task";
 import { IUser } from "@/@types/user";
 import { isObjectEmpty } from "@/helpers/isEmpty";
 import useAddTask from "@/queries/useAddTask";
 import useGetUsers from "@/queries/useGetUsers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import { IoIosClose } from "react-icons/io";
 import "react-tagsinput/react-tagsinput.css";
 import TextInput from "../Forms/TextInput";
+
 interface PopoverProps {
   handleToggle: () => void;
-}
-
-interface TagI {
-  tagName: string;
-  id: number;
-}
-
-interface SubTaskI {
-  title: string;
-  id: number;
 }
 
 const status = ["fazer", "fazendo", "feito"];
@@ -29,11 +21,14 @@ const priority = ["Baixo", "Médio", "Alto", "Urgente"];
 const Popover = ({ handleToggle }: PopoverProps) => {
   const [mode, setMode] = useState<"details" | "subtask">("details");
 
-  const [task, setTask] = useState({});
-  const [subTask, setSubTask] = useState<SubTaskI[]>([]);
-  const [tags, setTags] = useState<TagI[]>([]);
-  const { data } = useGetUsers();
+  const [task, setTask] = useState<Itask>({
+    title: "",
+    description: "",
+  });
 
+  const [subTasks, setSubTask] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const { data } = useGetUsers();
   const { mutate } = useAddTask();
 
   const handleAdd = (
@@ -42,30 +37,25 @@ const Popover = ({ handleToggle }: PopoverProps) => {
   ) => {
     if (e.key === "Enter") {
       const inputValue = (e.target as HTMLInputElement).value;
-      if (type === "tags") {
-        setTags((prev) => [
-          ...prev,
-          { tagName: inputValue, id: Math.floor(Math.random() * 1000) },
-        ]);
-        setTask((prev) => ({ ...prev, tags }));
-        (e.target as HTMLInputElement).value = "";
+      if (type === "tag") {
+        setTags((prev) => [...prev, inputValue]);
       } else if (type === "subtask") {
-        setSubTask((prev) => [
-          ...prev,
-          { title: inputValue, id: Math.floor(Math.random() * 1000) },
-        ]);
-        setTask((prev) => ({ ...prev, subTask }));
-        (e.target as HTMLInputElement).value = "";
+        setSubTask((prev) => [...prev, inputValue]);
       }
+      (e.target as HTMLInputElement).value = "";
     }
   };
 
-  const handleRemoveTag = (tagId: number) => {
-    setTags((prev) => prev.filter((tag) => tag.id !== tagId));
+  const handleRemoveTag = (tag: string) => {
+    setTags((prev) => prev.filter((tag) => tag !== tag));
   };
 
+  useEffect(() => {
+    if (tags.length !== 0) setTask((prev) => ({ ...prev, tags }));
+    if (subTasks.length !== 0) setTask((prev) => ({ ...prev, subTasks }));
+  }, [tags, subTasks]);
+
   const handleAddTask = () => {
-    setTask({});
     setSubTask([]);
     setTags([]);
     mutate(task);
@@ -107,7 +97,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                 : "text-neutral-300"
             }  cursor-pointer`}
           >
-            Subtarefas
+            Subtarefas ({subTasks.length})
           </p>
         </header>
         <hr className="mb-[20px]" />
@@ -126,6 +116,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                     required
                     className="mb-[20px]"
                     id="title"
+                    value={task.title}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -133,6 +124,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                     Descrição *
                   </label>
                   <textarea
+                    value={task.description}
                     onChange={(e) =>
                       setTask((prev) => ({
                         ...prev,
@@ -149,13 +141,13 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                   Tags
                 </label>
                 <div className="flex flex-wrap border-[1px] border-neutral-200 rounded-md items-center">
-                  {tags.map((tag: TagI) => (
+                  {tags.map((tag: string, i) => (
                     <div
-                      key={tag.id}
+                      key={tag + i}
                       className="bg-neutral-800 text-sm rounded-xl pl-[10px] flex w-fit items-center justify-center text-white mr-[10px]"
                     >
-                      <span>{tag.tagName}</span>
-                      <button onClick={() => handleRemoveTag(tag.id)}>
+                      <span>{tag}</span>
+                      <button onClick={() => handleRemoveTag(tag)}>
                         <IoIosClose size={30} />
                       </button>
                     </div>
@@ -170,7 +162,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                   <div className="flex-1 ">
                     <label
                       htmlFor="user"
-                      className=" mb-2  text-gray-900 font-semibold"
+                      className="mb-2 font-semibold text-gray-900 "
                     >
                       Atribuir para
                     </label>
@@ -182,6 +174,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                           responsable: e.target.value,
                         }))
                       }
+                      value={task.responsable}
                       id="user"
                       className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-neutral-500 focus:border-neutral-500 block w-full p-2.5 "
                     >
@@ -189,7 +182,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                         Selecione uma opção
                       </option>
                       {data?.map((user: IUser) => (
-                        <option key={user._id} value={user.name}>
+                        <option key={user._id} value={user.email}>
                           {user.name}
                         </option>
                       ))}
@@ -198,7 +191,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                   <div className="flex-1">
                     <label
                       htmlFor="status"
-                      className=" mb-2  text-gray-900 font-semibold"
+                      className="mb-2 font-semibold text-gray-900 "
                     >
                       Status
                     </label>
@@ -209,6 +202,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                           status: e.target.value,
                         }))
                       }
+                      value={task.status}
                       id="status"
                       className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-neutral-500 focus:border-neutral-500 block w-full p-2.5 "
                     >
@@ -226,19 +220,19 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                   </div>
                 </div>
                 <div className="flex gap-[20px] mt-[20px]">
-                  <div className="flex flex-col  w-1/2">
+                  <div className="flex flex-col w-1/2">
                     <label
                       htmlFor="deadline"
-                      className=" mb-2  text-gray-900 font-semibold"
+                      className="mb-2 font-semibold text-gray-900 "
                     >
                       Prazo
                     </label>
                     <TextInput id="deadline" className="" />
                   </div>
-                  <div className="flex flex-col  w-1/2">
+                  <div className="flex flex-col w-1/2">
                     <label
                       htmlFor="priority"
-                      className=" mb-2  text-gray-900 font-semibold"
+                      className="mb-2 font-semibold text-gray-900 "
                     >
                       Prioridade
                     </label>
@@ -246,9 +240,10 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                       onChange={(e) =>
                         setTask((prev) => ({
                           ...prev,
-                          responsable: e.target.value,
+                          priority: e.target.value,
                         }))
                       }
+                      value={task.priority}
                       id="user"
                       className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-neutral-500 focus:border-neutral-500 block w-full p-2.5 "
                     >
@@ -286,16 +281,16 @@ const Popover = ({ handleToggle }: PopoverProps) => {
               onKeyDown={(e) => handleAdd(e, "subtask")}
               className="w-full"
             />
-            {subTask.map((sub: SubTaskI) => (
+            {subTasks.map((sub: string, i) => (
               <div
-                key={sub.id}
+                key={sub + i}
                 className="bg-neutral-100 mb-[10px] p-[10px] rounded mt-[20px] flex items-center gap-[20px]"
               >
                 <input
                   type="checkbox"
-                  className="appearance-none w-6 h-6 rounded border border-gray-300 checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  className="w-6 h-6 border border-gray-300 rounded appearance-none checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 />
-                <p>{sub.title}</p>
+                <p>{sub}</p>
               </div>
             ))}
           </div>

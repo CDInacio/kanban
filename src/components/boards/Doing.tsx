@@ -5,30 +5,33 @@ import Card from "../Surfaces/Card";
 import TaskItem from "./TaskItem";
 
 const Doing = () => {
-  const [todo, setTodo] = useState<Itask[]>([]);
+  const [data, setData] = useState<Itask[]>([]);
   const { tasks } = useTaskContext();
-  console.log(tasks);
+
   useEffect(() => {
     const doing = tasks.filter((task) => {
       if (task.status === "fazendo") {
         return task;
       }
     });
-    setTodo(doing);
+    setData(doing);
   }, [tasks]);
 
   return (
-    <div className=" flex-1 ">
-      <h2 className="text-slate-800 text-2xl font-bold">Fazendo</h2>
-      <Card>
-        {todo.map((task) => (
-          <TaskItem
-            key={task.id}
-            title={task.title}
-            createdAt={task.createdAt}
-          />
-        ))}
-      </Card>
+    <div className="flex-1 ">
+      <h2 className="text-2xl font-bold text-slate-800">Fazendo</h2>
+      {data.length !== 0 && (
+        <Card>
+          {data.map((item, i) => (
+            <TaskItem
+              key={i}
+              title={item.title}
+              subTasks={item.subTasks}
+              createdAt={item.createdAt}
+            />
+          ))}
+        </Card>
+      )}
     </div>
   );
 };
