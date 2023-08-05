@@ -29,7 +29,7 @@ const Nav = () => {
   const handleSigOut = () => {
     signOut();
   };
-  console.log("first");
+
   return (
     <>
       <nav className="bg-white py-[30px] shadow-sm">
@@ -68,10 +68,6 @@ const Nav = () => {
       <div className="relative">
         {isOpen && <Popover handleToggle={togglePopover} />}
       </div>
-      {data.map((item: any) => (
-        <p>{item}</p>
-      ))}
-      <p onClick={() => setData((prev: any) => [...prev, prev + prev])}>add</p>
     </>
   );
 };

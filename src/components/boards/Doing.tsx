@@ -7,13 +7,11 @@ import TaskItem from "./TaskItem";
 const Doing = () => {
   const [todo, setTodo] = useState<Itask[]>([]);
   const { tasks } = useTaskContext();
-
+  console.log(tasks);
   useEffect(() => {
     const doing = tasks.filter((task) => {
-      if (task.status === undefined) {
+      if (task.status === "fazendo") {
         return task;
-      } else if (task.status === "fazendo") {
-        return;
       }
     });
     setTodo(doing);
