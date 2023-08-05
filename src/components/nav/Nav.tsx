@@ -22,7 +22,7 @@ const Nav = () => {
   const handleOpenUserMenu = () => {
     setDropdown(true);
   };
-
+  const [data, setData] = useState<any>([1]);
   const handleSigIn = () => {
     signIn();
   };

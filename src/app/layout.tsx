@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import type { Metadata } from "next";
 
+import { TaskContextProvider } from "@/context/taskContext";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -26,7 +27,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
-            {children}
+            <TaskContextProvider>{children}</TaskContextProvider>
           </QueryClientProvider>
         </SessionProvider>
       </body>
