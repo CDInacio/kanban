@@ -42,7 +42,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
   ) => {
     if (e.key === "Enter") {
       const inputValue = (e.target as HTMLInputElement).value;
-      if (type === "tag") {
+      if (type === "tags") {
         setTags((prev) => [
           ...prev,
           { tagName: inputValue, id: Math.floor(Math.random() * 1000) },
