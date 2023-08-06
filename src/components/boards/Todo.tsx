@@ -16,7 +16,6 @@ const Todo = () => {
     });
     setData(doing);
   }, [tasks]);
-
   return (
     <div className="flex-1">
       <h2 className="text-2xl font-bold text-slate-800">A Fazer</h2>
@@ -24,12 +23,14 @@ const Todo = () => {
         <Card>
           {data.map((item, i) => (
             <TaskItem
+              _id={item._id}
               key={i}
               title={item.title}
               subTasks={item.subTasks}
               responsable={item.responsable}
               priority={item.priority}
               createdAt={item.createdAt}
+              description={item.description}
             />
           ))}
         </Card>

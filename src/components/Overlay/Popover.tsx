@@ -10,6 +10,7 @@ import "react-calendar/dist/Calendar.css";
 import { IoIosClose } from "react-icons/io";
 import "react-tagsinput/react-tagsinput.css";
 import TextInput from "../Forms/TextInput";
+import Modal from "../Utils/Modal";
 
 interface PopoverProps {
   handleToggle: () => void;
@@ -73,11 +74,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
 
   return (
     <>
-      <div
-        onClick={handleToggle}
-        className="fixed inset-0 z-10 bg-black bg-opacity-50"
-      ></div>
-      <div className="absolute flex flex-col p-[30px]  left-0 right-0 z-20 overflow-hidden  mx-auto bg-white w-[1100px] min-h-[400px] border border-gray-200 rounded shadow top-10">
+      <Modal handleToggle={handleToggle}>
         <header className="mb-[20px] text-xl flex">
           <p
             onClick={() => setMode("details")}
@@ -295,7 +292,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
             ))}
           </div>
         )}
-      </div>
+      </Modal>
     </>
   );
 };

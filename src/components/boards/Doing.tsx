@@ -27,6 +27,8 @@ const Doing = () => {
               key={i}
               title={item.title}
               subTasks={item.subTasks}
+              responsable={item.responsable}
+              priority={item.priority}
               createdAt={item.createdAt}
             />
           ))}

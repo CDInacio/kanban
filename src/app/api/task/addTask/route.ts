@@ -3,15 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
     const task = await req.json();
-
     task.createdAt = new Date().toISOString()
-
     try {
         const db = await connectToDatabase()
         await db.collection('tasks').insertOne(task)
+        return NextResponse.json({ message: 'Task created successfully' })
     } catch (error) {
-
+        return console.log(error)
     }
 
-    return NextResponse.json({ message: "ola" })
 }
