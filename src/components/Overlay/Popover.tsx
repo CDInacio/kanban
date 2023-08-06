@@ -10,6 +10,7 @@ import "react-calendar/dist/Calendar.css";
 import { IoIosClose } from "react-icons/io";
 import "react-tagsinput/react-tagsinput.css";
 import TextInput from "../Forms/TextInput";
+import Subtask from "../SubTasks/Subtask";
 import Modal from "../Utils/Modal";
 
 interface PopoverProps {
@@ -27,8 +28,8 @@ const Popover = ({ handleToggle }: PopoverProps) => {
     description: "",
   });
 
-  const [subTasks, setSubTask] = useState<string[]>([]);
-  const [tags, setTags] = useState<string[]>([]);
+  const [subTasks, setSubTask] = useState<any[]>([]);
+  const [tags, setTags] = useState<any[]>([]);
   const { data } = useGetUsers();
   const { mutate } = useAddTask();
 
@@ -39,9 +40,19 @@ const Popover = ({ handleToggle }: PopoverProps) => {
     if (e.key === "Enter") {
       const inputValue = (e.target as HTMLInputElement).value;
       if (type === "tag") {
-        setTags((prev) => [...prev, inputValue]);
+        setTags((prev) => [
+          ...prev,
+          { text: inputValue, id: Math.floor(Math.random() * 1000) },
+        ]);
       } else if (type === "subtask") {
-        setSubTask((prev) => [...prev, inputValue]);
+        setSubTask((prev) => [
+          ...prev,
+          {
+            text: inputValue,
+            id: Math.floor(Math.random() * 1000),
+            done: false,
+          },
+        ]);
       }
       (e.target as HTMLInputElement).value = "";
     }
@@ -138,12 +149,12 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                   Tags
                 </label>
                 <div className="flex flex-wrap border-[1px] border-neutral-200 rounded-md items-center">
-                  {tags.map((tag: string, i) => (
+                  {tags.map((tag: any, i) => (
                     <div
                       key={tag + i}
                       className="bg-neutral-800 text-sm rounded-xl pl-[10px] flex w-fit items-center justify-center text-white mr-[10px]"
                     >
-                      <span>{tag}</span>
+                      <span>{tag.text}</span>
                       <button onClick={() => handleRemoveTag(tag)}>
                         <IoIosClose size={30} />
                       </button>
@@ -278,17 +289,8 @@ const Popover = ({ handleToggle }: PopoverProps) => {
               onKeyDown={(e) => handleAdd(e, "subtask")}
               className="w-full"
             />
-            {subTasks.map((sub: string, i) => (
-              <div
-                key={sub + i}
-                className="bg-neutral-100 mb-[10px] p-[10px] rounded mt-[20px] flex items-center gap-[20px]"
-              >
-                <input
-                  type="checkbox"
-                  className="w-6 h-6 border border-gray-300 rounded appearance-none checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                />
-                <p>{sub}</p>
-              </div>
+            {subTasks.map((sub: any, i) => (
+              <Subtask key={i} text={sub.text} />
             ))}
           </div>
         )}

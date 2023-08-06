@@ -81,8 +81,8 @@ const TaskItem = ({
           <>
             <h5 className="font-semibold text-lg mt-[20px]">Subtarefas</h5>
             <ul>
-              {subTasks?.map((el, i) => (
-                <li key={el + i}>{el}</li>
+              {subTasks?.map((el: any, i) => (
+                <li key={el + i}>{el.text}</li>
               ))}
             </ul>
           </>
@@ -109,6 +109,7 @@ const TaskItem = ({
       {isOpen && (
         <>
           <ViewTask
+            _id={_id}
             handleToggle={handleToggle}
             title={title}
             description={description}
