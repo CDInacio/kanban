@@ -218,11 +218,9 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                         Selecione uma opção
                       </option>
                       {status?.map((el: any, i) => (
-                        <>
-                          <option key={`${el + i}`} value={el}>
-                            {el}
-                          </option>
-                        </>
+                        <option key={`${el + i}`} value={el}>
+                          {el}
+                        </option>
                       ))}
                     </select>
                   </div>

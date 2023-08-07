@@ -5,8 +5,14 @@ export interface Itask {
     priority?: string;
     createdAt?: string;
     tags?: string[];
-    subTasks?: string[];
+    subTasks?: IsubTask[];
     status?: string;
     responsable?: string;
     comments?: string[];
+}
+
+export interface IsubTask {
+    id: number;
+    title: string;
+    done: boolean;
 }

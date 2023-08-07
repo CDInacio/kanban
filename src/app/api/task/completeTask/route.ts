@@ -15,14 +15,14 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
         if (subTaskId === -1) return NextResponse.json({ message: 'Subtask not found' }, { status: 404 })
 
-        const updatedSubtext = {
+        const updatedSubtask = {
             ...task.subTasks[subTaskId],
             done: !task.subTasks[subTaskId].done,
             updatedAt: new Date(),
         }
 
-        await db.collection('users').updateOne({ _id: taskId }, { $set: { [`subTasks.${subTaskId}`]: updatedSubtext } })
-
+        const response = await db.collection('tasks').updateOne({ _id: taskId }, { $set: { [`subTasks.${subTaskId}`]: updatedSubtask } })
+        console.log(response)
         return NextResponse.json('response')
     } catch (error) {
         console.log(error)

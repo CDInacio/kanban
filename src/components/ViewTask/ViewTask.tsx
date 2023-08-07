@@ -1,5 +1,5 @@
 "use client";
-import { Itask } from "@/@types/task";
+import { IsubTask, Itask } from "@/@types/task";
 import useCompleteTask from "@/queries/useCompleteTask";
 import moment from "moment";
 import "moment/locale/pt-br";
@@ -10,6 +10,12 @@ import Modal from "../Utils/Modal";
 type ViewTaskProps = Itask & {
   handleToggle: () => void;
 };
+
+interface SubTaskItem {
+  id: number; // Assuming 'id' is of type number
+  text: string;
+  done: boolean;
+}
 
 const ViewTask = ({
   handleToggle,
@@ -32,6 +38,10 @@ const ViewTask = ({
     mutate(data);
   };
 
+  const doneCount = subTasks?.filter(
+    (sub: IsubTask) => sub.done === true
+  ).length;
+
   return (
     <Modal handleToggle={handleToggle}>
       <header className="mb-[20px] text-xl flex">
@@ -53,7 +63,8 @@ const ViewTask = ({
               : "text-neutral-300"
           }  cursor-pointer`}
         >
-          Subtarefas (0/{subTasks === undefined ? 0 : subTasks?.length})
+          Subtarefas ({doneCount}/
+          {subTasks === undefined ? 0 : subTasks?.length})
         </p>
       </header>
       {mode === "details" ? (
@@ -73,14 +84,13 @@ const ViewTask = ({
             <p>Não há subtarefas</p>
           ) : (
             <>
-              {subTasks.map((sub: any, i) => (
-                <>
-                  <Subtask
-                    onClick={() => handleCompleteTask(sub.id, _id)}
-                    key={i}
-                    text={sub.text}
-                  />
-                </>
+              {subTasks.map((sub: any) => (
+                <Subtask
+                  key={sub.id}
+                  done={sub.done}
+                  handleCompleteTask={() => handleCompleteTask(sub.id, _id)}
+                  text={sub.text}
+                />
               ))}
             </>
           )}

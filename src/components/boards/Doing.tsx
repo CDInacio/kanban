@@ -24,12 +24,14 @@ const Doing = () => {
         <Card>
           {data.map((item, i) => (
             <TaskItem
+              _id={item._id}
               key={i}
               title={item.title}
               subTasks={item.subTasks}
               responsable={item.responsable}
               priority={item.priority}
               createdAt={item.createdAt}
+              description={item.description}
             />
           ))}
         </Card>
