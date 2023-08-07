@@ -3,7 +3,7 @@
 import { Itask } from "@/@types/task";
 import useGetTasks from "@/queries/usegetTasks";
 // import useGetTasks from "@/queries/usegetTasks";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface TaskContexT {
   tasks: Itask[];
@@ -24,11 +24,11 @@ export const TaskContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const { data } = useGetTasks();
 
-  useEffect(() => {
-    if (data?.data) {
-      setTasks(data?.data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data?.data) {
+  //     setTasks(data?.data);
+  //   }
+  // }, [data]);
 
   return (
     <TaskContext.Provider value={{ tasks }}>{children}</TaskContext.Provider>

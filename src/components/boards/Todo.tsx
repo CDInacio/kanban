@@ -1,27 +1,29 @@
 import { Itask } from "@/@types/task";
-import { useTaskContext } from "@/context/taskContext";
+import useGetTasks from "@/queries/usegetTasks";
 import { useEffect, useState } from "react";
 import Card from "../Surfaces/Card";
 import TaskItem from "./TaskItem";
 
 const Todo = () => {
-  const [data, setData] = useState<Itask[]>([]);
-  const { tasks } = useTaskContext();
+  const [todo, setTodo] = useState<Itask[]>([]);
+  const { data } = useGetTasks();
+  console.log(data);
 
   useEffect(() => {
-    const doing = tasks.filter((task) => {
+    const doing = data?.data.filter((task: any) => {
       if (task.status === "fazer" || task.status === undefined) {
         return task;
       }
     });
-    setData(doing);
-  }, [tasks]);
+    setTodo(doing);
+  }, [data]);
+
   return (
     <div className="flex-1">
       <h2 className="text-2xl font-bold text-slate-800">A Fazer</h2>
-      {data.length !== 0 && (
+      {todo?.length !== 0 && (
         <Card>
-          {data.map((item, i) => (
+          {todo?.map((item, i) => (
             <TaskItem
               _id={item._id}
               key={i}
