@@ -7,6 +7,11 @@ import { useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 const Signin = () => {
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
   const [show, setShow] = useState(false);
   const { data: session, status } = useSession();
 
@@ -20,8 +25,17 @@ const Signin = () => {
   //   }
   // }, [status]);
 
-  const handleLogin = (provider: string) => {
-    signIn(provider, { callbackUrl: "/home" });
+  const handleLoginWithProvider = (provider: string) => {
+    const res = signIn(provider, { callbackUrl: "/home" });
+  };
+
+  const handleLoginWithCredentials = async () => {
+    const res = await signIn("credentials", {
+      email: credentials.email,
+      password: credentials.password,
+      redirect: true,
+      callbackUrl: "/home",
+    });
   };
 
   return (
@@ -30,17 +44,31 @@ const Signin = () => {
         <h2 className="text-3xl font-bold text-neutral-800 text-center mb-[40px]">
           Login
         </h2>
-        <form className="flex flex-col">
-          <TextInput className="mb-[10px]" placeholder="Email" type="email" />
+        <div className="flex flex-col">
           <TextInput
+            onChange={(e) =>
+              setCredentials((prev) => ({ ...prev, email: e.target.value }))
+            }
+            className="mb-[10px]"
+            placeholder="Email"
+            type="email"
+          />
+          <TextInput
+            onChange={(e) =>
+              setCredentials((prev) => ({ ...prev, password: e.target.value }))
+            }
             className="mb-[10px]"
             placeholder="Senha"
             type="password"
           />
-          <button className="bg-neutral-800 py-[10px] rounded-sm text-white hover:bg-neutral-900 transition ease-out duration-300">
+          <button
+            onClick={handleLoginWithCredentials}
+            type="submit"
+            className="bg-neutral-800 py-[10px] rounded-sm text-white hover:bg-neutral-900 transition ease-out duration-300"
+          >
             Entrar
           </button>
-        </form>
+        </div>
         <div className="relative flex items-center py-5">
           <div className="flex-grow border-t border-gray-400"></div>
           <span className="flex-shrink mx-4 text-gray-400">ou entre com</span>
@@ -52,7 +80,7 @@ const Signin = () => {
             <span className="ml-[10px]">Entrar com Facebook</span>
           </div>
           <div
-            onClick={() => handleLogin("google")}
+            onClick={() => handleLoginWithProvider("google")}
             className="flex  text-neutral-600 justify-center items-center rounded-sm border-[1px] border-neutral-300 py-[10px] cursor-pointer hover:bg-neutral-100 transition ease-out duration-300"
           >
             <FcGoogle size={25} />

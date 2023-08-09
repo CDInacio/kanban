@@ -1,27 +1,31 @@
 "use client";
 
+import { CredentialsI } from "@/@types/auth";
 import TextInput from "@/components/Forms/TextInput";
 import Card from "@/components/Surfaces/Card";
+import useSignup from "@/queries/useSignup";
 import { FormEvent, useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 const passwordRegex = /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/;
+const usernameRegex = /^[a-zA-Z_]+$/;
 
 const Signup = () => {
-  const [credentials, setCredentials] = useState({
-    username: "",
+  const { mutate, data } = useSignup();
+  const [credentials, setCredentials] = useState<CredentialsI>({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
   const validateErrors = () => {
     let errors: any = {};
 
-    if (credentials.username.trim() === "") {
-      errors.username = "Nome de usuário é obrigatório";
+    if (!usernameRegex.test(credentials.name)) {
+      errors.name = "Nome de usuário inválido";
     }
+
     if (credentials.email.trim() === "") {
       errors.email = "E-mail é obrigatório";
     }
@@ -31,7 +35,7 @@ const Signup = () => {
     if (credentials.password.trim() === "") {
       errors.password = "Senha é obrigatória";
     }
-    if (credentials.confirmPassword.trim() === "") {
+    if (credentials.confirmPassword!.trim() === "") {
       errors.confirmPassword = "Confirmação de senha é obrigatória";
     }
 
@@ -41,7 +45,17 @@ const Signup = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const errors = validateErrors();
-    console.log(errors);
+
+    if (Object.keys(errors).length) {
+      // mostrar os erros
+      return;
+    }
+
+    mutate({
+      name: credentials.name,
+      email: credentials.email,
+      password: credentials.password,
+    });
   };
 
   console.log();
@@ -54,7 +68,7 @@ const Signup = () => {
         <form onSubmit={handleSubmit} className="flex flex-col">
           <TextInput
             onChange={(e) =>
-              setCredentials((prev) => ({ ...prev, username: e.target.value }))
+              setCredentials((prev) => ({ ...prev, name: e.target.value }))
             }
             className="mb-[10px]"
             placeholder="Nome de usuário"
@@ -81,8 +95,8 @@ const Signup = () => {
               type="password"
             />
             <p className="text-sm text-neutral-400">
-              A senha deve conter letras maiúsculas, minusculas e caracteres
-              especiais
+              A senha deve conter numeros, letras maiúsculas, minusculas e
+              caracteres especiais
             </p>
           </div>
           <TextInput
