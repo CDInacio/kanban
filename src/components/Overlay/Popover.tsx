@@ -5,7 +5,7 @@ import { IUser } from "@/@types/user";
 import { isObjectEmpty } from "@/helpers/isEmpty";
 import useAddTask from "@/queries/useAddTask";
 import useGetUsers from "@/queries/useGetUsers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import { IoIosClose } from "react-icons/io";
 import "react-tagsinput/react-tagsinput.css";
@@ -58,19 +58,23 @@ const Popover = ({ handleToggle }: PopoverProps) => {
     }
   };
 
-  const handleRemoveTag = (tag: string) => {
-    setTags((prev) => prev.filter((tag) => tag !== tag));
+  const handleRemoveTag = (id: number) => {
+    setTags((prev) => prev.filter((tag) => tag.id !== id));
   };
 
-  useEffect(() => {
-    if (tags.length !== 0) setTask((prev) => ({ ...prev, tags }));
-    if (subTasks.length !== 0) setTask((prev) => ({ ...prev, subTasks }));
-  }, [tags, subTasks]);
-
   const handleAddTask = () => {
-    setSubTask([]);
-    setTags([]);
-    mutate(task);
+    let newTask = {};
+
+    if (tags.length !== 0 && subTasks.length === 0) {
+      newTask = { ...task, tags };
+    } else if (subTasks.length !== 0 && tags.length === 0) {
+      newTask = { ...task, subTasks };
+    } else if (tags.length !== 0 && subTasks.length !== 0) {
+      newTask = { ...task, tags, subTasks };
+    } else {
+      newTask = { ...task };
+    }
+    mutate(newTask);
     handleToggle();
   };
 
@@ -155,7 +159,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                       className="bg-neutral-800 text-sm rounded-xl pl-[10px] flex w-fit items-center justify-center text-white mr-[10px]"
                     >
                       <span>{tag.text}</span>
-                      <button onClick={() => handleRemoveTag(tag)}>
+                      <button onClick={() => handleRemoveTag(tag.id)}>
                         <IoIosClose size={30} />
                       </button>
                     </div>

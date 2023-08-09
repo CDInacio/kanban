@@ -1,13 +1,13 @@
 import { Itask } from "@/@types/task";
 import useGetTasks from "@/queries/usegetTasks";
 import { useEffect, useState } from "react";
+
 import Card from "../Surfaces/Card";
 import TaskItem from "./TaskItem";
 
 const Todo = () => {
   const [todo, setTodo] = useState<Itask[]>([]);
   const { data } = useGetTasks();
-  console.log(data);
 
   useEffect(() => {
     const doing = data?.data.filter((task: any) => {
