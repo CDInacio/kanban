@@ -26,25 +26,28 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
-  console.log(isLoading, data);
+
   const validateErrors = () => {
     let errors: any = {};
 
     if (!usernameRegex.test(credentials.name)) {
-      errors.name = "Nome de usuário inválido";
+      errors.name = "Nome de usuário inválido.";
     }
 
     if (credentials.email.trim() === "") {
-      errors.email = "E-mail é obrigatório";
+      errors.email = "E-mail é obrigatório.";
     }
     if (!passwordRegex.test(credentials.password)) {
-      errors.password = "Senha inválida";
+      errors.password = "Senha inválida.";
     }
     if (credentials.password.trim() === "") {
-      errors.password = "Senha é obrigatória";
+      errors.password = "Senha é obrigatória.";
     }
     if (credentials.confirmPassword!.trim() === "") {
-      errors.confirmPassword = "Confirmação de senha é obrigatória";
+      errors.confirmPassword = "Confirmação de senha é obrigatória.";
+    }
+    if (credentials.confirmPassword !== credentials.password) {
+      errors.confirmPassword = "Confirmação de senha incorreta.";
     }
 
     return errors;
@@ -55,7 +58,17 @@ const Signup = () => {
     const errors = validateErrors();
 
     if (Object.keys(errors).length) {
-      // mostrar os erros
+      Object.values(errors).forEach((errorMsg: any) => {
+        toast.error(errorMsg, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
       return;
     }
 
