@@ -9,7 +9,7 @@ export interface Itask {
     status?: string;
     responsable?: string;
     comments?: CommentI[];
-    deadline?: string;
+    deadline?: Date;
 }
 
 export interface IsubTask {

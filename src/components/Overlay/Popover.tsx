@@ -5,7 +5,7 @@ import { IUser } from "@/@types/user";
 import { isObjectEmpty } from "@/helpers/isEmpty";
 import useAddTask from "@/queries/useAddTask";
 import useGetUsers from "@/queries/useGetUsers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { IoIosClose } from "react-icons/io";
@@ -26,16 +26,15 @@ const Popover = ({ handleToggle }: PopoverProps) => {
   const [deadline, setDeadline] = useState(new Date());
   const [select, setSelect] = useState<boolean>(false);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  const [task, setTask] = useState<Itask>({
+    title: "",
+    description: "",
+  });
 
   const handleDeadline = (data: any) => {
     setSelect(true);
     setDeadline(data);
   };
-
-  const [task, setTask] = useState<Itask>({
-    title: "",
-    description: "",
-  });
 
   const [subTasks, setSubTask] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
@@ -71,22 +70,35 @@ const Popover = ({ handleToggle }: PopoverProps) => {
     setTags((prev) => prev.filter((tag) => tag !== tag));
   };
 
-  useEffect(() => {
-    if (tags.length !== 0) setTask((prev) => ({ ...prev, tags }));
-    if (subTasks.length !== 0) setTask((prev) => ({ ...prev, subTasks }));
-    if (select) {
-      setTask((prev) => ({
-        ...prev,
-        deadline,
-      }));
-    }
-  }, [tags, subTasks, deadline]);
+  // useEffect(() => {
+  //   if (tags.length !== 0) setTask((prev) => ({ ...prev, tags }));
+  //   if (subTasks.length !== 0) setTask((prev) => ({ ...prev, subTasks }));
+  //   if (select) {
+  //     setTask((prev) => ({
+  //       ...prev,
+  //       deadline,
+  //     }));
+  //   }
+  // }, [tags, subTasks, deadline]);
 
   const handleAddTask = () => {
-    setSubTask([]);
-    setTags([]);
-    mutate(task);
-    handleToggle();
+    let newTask = {
+      ...task,
+    };
+
+    if (tags.length > 0) {
+      newTask.tags = tags;
+    }
+
+    if (subTasks.length > 0) {
+      newTask.subTasks = subTasks;
+    }
+
+    if (select) {
+      newTask.deadline = deadline;
+    }
+    mutate(newTask);
+    // handleToggle();
   };
 
   const handleCancel = () => {
