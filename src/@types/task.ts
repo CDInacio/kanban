@@ -9,6 +9,7 @@ export interface Itask {
     status?: string;
     responsable?: string;
     comments?: CommentI[];
+    deadline?: string;
 }
 
 export interface IsubTask {
@@ -18,11 +19,12 @@ export interface IsubTask {
 }
 
 export interface CommentI {
+    taskId: string | undefined;
     author: {
         name: string | null | undefined;
-        Image: string | null | undefined;
+        image: string | null | undefined;
     };
     id: number;
     text: string;
-    taskId: string | undefined;
+    createdAt: string
 }

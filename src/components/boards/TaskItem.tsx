@@ -6,7 +6,12 @@ import { Itask } from "@/@types/task";
 import { IUser } from "@/@types/user";
 import useGetUsers from "@/queries/useGetUsers";
 import useRemoveTask from "@/queries/useRemoveTask";
-import { BiComment, BiDotsVerticalRounded } from "react-icons/bi";
+import {
+  BiCalendarAlt,
+  BiComment,
+  BiCommentDetail,
+  BiDotsVerticalRounded,
+} from "react-icons/bi";
 import Avatar from "../Data Display/Avatar";
 import Badge from "../Data Display/Badge";
 import Tooltip from "../Data Display/ToolTip";
@@ -21,6 +26,7 @@ const TaskItem = ({
   createdAt,
   responsable,
   comments,
+  deadline,
 }: Itask) => {
   const { mutate } = useRemoveTask();
   const { data } = useGetUsers();
@@ -83,15 +89,20 @@ const TaskItem = ({
             <h5 className="font-semibold text-lg mt-[20px]">Subtarefas</h5>
             <ul>
               {subTasks?.map((el: any, i) => (
-                <li key={el + i}>{el.text}</li>
+                <li className="text-neutral-400" key={el + i}>
+                  - {el.text}
+                </li>
               ))}
             </ul>
           </>
         )}
         <div className="flex items-center justify-between mt-[20px]">
-          <p className="text-neutral-400">
-            {moment(createdAt).locale("pt").format("ll")}
-          </p>
+          <div className="flex items-center justify-between rounded">
+            <BiCalendarAlt size={20} />
+            <p className="text-neutral-400 ml-[5px]">
+              {moment(deadline).format("D MMM")}
+            </p>
+          </div>
           <div className="flex items-center gap-[20px]">
             {responsable && (
               <Tooltip text={userData?.name}>
@@ -102,7 +113,18 @@ const TaskItem = ({
                 />
               </Tooltip>
             )}
-            <BiComment size={20} />
+            <div className="flex items-center">
+              <span className="mr-[10px]">
+                {comments ? comments.length : 0}
+              </span>
+              <span className="cursor-pointer">
+                {comments ? (
+                  <BiCommentDetail size={20} />
+                ) : (
+                  <BiComment size={20} />
+                )}
+              </span>
+            </div>
           </div>
         </div>
         <hr className="mt-[20px]" />
@@ -119,6 +141,7 @@ const TaskItem = ({
             subTasks={subTasks}
             priority={priority}
             comments={comments}
+            deadline={deadline}
           />
         </>
       )}

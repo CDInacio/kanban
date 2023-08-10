@@ -9,14 +9,14 @@ interface ModalProps {
 
 const Modal = ({ children, className, handleToggle }: ModalProps) => {
   return (
-    <div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
         onClick={handleToggle}
         className="fixed inset-0 z-10 bg-black bg-opacity-50"
       ></div>
       <div
         className={twMerge(
-          "absolute flex flex-col p-[30px]  left-0 right-0 z-20 overflow-hidden  mx-auto bg-white w-[1100px] min-h-[400px] border border-gray-200 rounded shadow top-10",
+          "relative flex flex-col p-[30px] z-20  bg-white w-[1100px] min-h-[400px] border border-gray-200 rounded shadow",
           className
         )}
       >

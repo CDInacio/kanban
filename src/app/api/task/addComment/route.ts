@@ -19,7 +19,8 @@ export async function POST(req: Request, res: Response) {
                 name: comment.author.name,
                 image: comment.author.image
             },
-            id: comment.id
+            id: comment.id,
+            createdAt: comment.createdAt
         }
 
         const res = await db.collection('tasks').updateOne({ _id: taskId }, {
@@ -27,7 +28,6 @@ export async function POST(req: Request, res: Response) {
                 comments: newComment
             }
         })
-        console.log(res)
 
         return NextResponse.json({ message: 'Task created successfully' })
     } catch (error) {

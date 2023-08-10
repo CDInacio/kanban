@@ -5,7 +5,8 @@ import { IUser } from "@/@types/user";
 import { isObjectEmpty } from "@/helpers/isEmpty";
 import useAddTask from "@/queries/useAddTask";
 import useGetUsers from "@/queries/useGetUsers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { IoIosClose } from "react-icons/io";
 import "react-tagsinput/react-tagsinput.css";
@@ -22,6 +23,14 @@ const priority = ["Baixo", "Médio", "Alto", "Urgente"];
 
 const Popover = ({ handleToggle }: PopoverProps) => {
   const [mode, setMode] = useState<"details" | "subtask">("details");
+  const [deadline, setDeadline] = useState(new Date());
+  const [select, setSelect] = useState<boolean>(false);
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+
+  const handleDeadline = (data: any) => {
+    setSelect(true);
+    setDeadline(data);
+  };
 
   const [task, setTask] = useState<Itask>({
     title: "",
@@ -58,23 +67,25 @@ const Popover = ({ handleToggle }: PopoverProps) => {
     }
   };
 
-  const handleRemoveTag = (id: number) => {
-    setTags((prev) => prev.filter((tag) => tag.id !== id));
+  const handleRemoveTag = (tag: string) => {
+    setTags((prev) => prev.filter((tag) => tag !== tag));
   };
 
-  const handleAddTask = () => {
-    let newTask = {};
-
-    if (tags.length !== 0 && subTasks.length === 0) {
-      newTask = { ...task, tags };
-    } else if (subTasks.length !== 0 && tags.length === 0) {
-      newTask = { ...task, subTasks };
-    } else if (tags.length !== 0 && subTasks.length !== 0) {
-      newTask = { ...task, tags, subTasks };
-    } else {
-      newTask = { ...task };
+  useEffect(() => {
+    if (tags.length !== 0) setTask((prev) => ({ ...prev, tags }));
+    if (subTasks.length !== 0) setTask((prev) => ({ ...prev, subTasks }));
+    if (select) {
+      setTask((prev) => ({
+        ...prev,
+        deadline,
+      }));
     }
-    mutate(newTask);
+  }, [tags, subTasks, deadline]);
+
+  const handleAddTask = () => {
+    setSubTask([]);
+    setTags([]);
+    mutate(task);
     handleToggle();
   };
 
@@ -159,7 +170,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                       className="bg-neutral-800 text-sm rounded-xl pl-[10px] flex w-fit items-center justify-center text-white mr-[10px]"
                     >
                       <span>{tag.text}</span>
-                      <button onClick={() => handleRemoveTag(tag.id)}>
+                      <button onClick={() => handleRemoveTag(tag)}>
                         <IoIosClose size={30} />
                       </button>
                     </div>
@@ -237,8 +248,25 @@ const Popover = ({ handleToggle }: PopoverProps) => {
                     >
                       Prazo
                     </label>
-                    <TextInput id="deadline" className="" />
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={select ? deadline.toLocaleDateString() : ""}
+                        readOnly
+                        className="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-neutral-500 focus:border-neutral-500 block p-2.5 pr-10" // Estilo do input
+                        onClick={() => setShowCalendar((prev) => !prev)} // Ao clicar no input, abre/fecha o calendário
+                      />
+                      {showCalendar && (
+                        <div className="absolute top-full left-0 mt-2 z-[1000]">
+                          <Calendar
+                            onChange={handleDeadline}
+                            value={deadline}
+                          />{" "}
+                        </div>
+                      )}
+                    </div>
                   </div>
+
                   <div className="flex flex-col w-1/2">
                     <label
                       htmlFor="priority"
@@ -286,7 +314,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
             </div>
           </>
         ) : (
-          <div>
+          <>
             <TextInput
               onKeyDown={(e) => handleAdd(e, "subtask")}
               className="w-full"
@@ -294,7 +322,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
             {subTasks.map((sub: any, i) => (
               <Subtask key={i} text={sub.text} />
             ))}
-          </div>
+          </>
         )}
       </Modal>
     </>
