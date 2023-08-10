@@ -99,14 +99,19 @@ const Signup = () => {
           Cadastro
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <TextInput
-            onChange={(e) =>
-              setCredentials((prev) => ({ ...prev, name: e.target.value }))
-            }
-            className="mb-[10px]"
-            placeholder="Nome de usuário"
-            type="text"
-          />
+          <div className="mb-[10px]">
+            <TextInput
+              onChange={(e) =>
+                setCredentials((prev) => ({ ...prev, name: e.target.value }))
+              }
+              className="w-full"
+              placeholder="Nome de usuário"
+              type="text"
+            />
+            <p className="ml-[5px] text-sm text-neutral-400">
+              Nome de usuário deve conter apenas letras
+            </p>
+          </div>
           <TextInput
             onChange={(e) =>
               setCredentials((prev) => ({ ...prev, email: e.target.value }))
@@ -127,7 +132,7 @@ const Signup = () => {
               placeholder="Senha"
               type="password"
             />
-            <p className="text-sm text-neutral-400">
+            <p className="ml-[5px] text-sm text-neutral-400">
               A senha deve conter numeros, letras maiúsculas, minusculas e
               caracteres especiais
             </p>
