@@ -5,6 +5,7 @@ import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 const Signin = () => {
@@ -12,6 +13,7 @@ const Signin = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const [show, setShow] = useState(false);
   const { data: session, status } = useSession();
@@ -54,14 +56,29 @@ const Signin = () => {
             placeholder="Email"
             type="email"
           />
-          <TextInput
-            onChange={(e) =>
-              setCredentials((prev) => ({ ...prev, password: e.target.value }))
-            }
-            className="mb-[10px]"
-            placeholder="Senha"
-            type="password"
-          />
+          <div className="relative mb-[10px]">
+            <TextInput
+              onChange={(e) =>
+                setCredentials((prev) => ({
+                  ...prev,
+                  password: e.target.value,
+                }))
+              }
+              className="w-full"
+              placeholder="Senha"
+              type={showPassword ? "text" : "password"}
+            />
+            <span
+              className="absolute top-[30%] right-[15px] cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? (
+                <AiOutlineEye size={20} />
+              ) : (
+                <AiOutlineEyeInvisible size={20} />
+              )}
+            </span>
+          </div>
           <button
             onClick={handleLoginWithCredentials}
             type="submit"

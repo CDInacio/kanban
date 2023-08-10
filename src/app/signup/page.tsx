@@ -7,6 +7,7 @@ import useSignup from "@/queries/useSignup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,6 +17,8 @@ const usernameRegex = /^[a-zA-Z_]+$/;
 
 const Signup = () => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { mutate, data, isLoading, isError } = useSignup();
   const [credentials, setCredentials] = useState<CredentialsI>({
     name: "",
@@ -121,33 +124,57 @@ const Signup = () => {
             type="email"
           />
           <div className="mb-[10px] ">
-            <TextInput
-              onChange={(e) =>
-                setCredentials((prev) => ({
-                  ...prev,
-                  password: e.target.value,
-                }))
-              }
-              className="w-full"
-              placeholder="Senha"
-              type="password"
-            />
+            <div className="relative">
+              <TextInput
+                onChange={(e) =>
+                  setCredentials((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }))
+                }
+                className="w-full"
+                placeholder="Senha"
+                type={showPassword ? "text" : "password"}
+              />
+              <span
+                className="absolute top-[30%] right-[15px] cursor-pointer"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? (
+                  <AiOutlineEye size={20} />
+                ) : (
+                  <AiOutlineEyeInvisible size={20} />
+                )}
+              </span>
+            </div>
             <p className="ml-[5px] text-sm text-neutral-400">
               A senha deve conter numeros, letras maiúsculas, minusculas e
               caracteres especiais
             </p>
           </div>
-          <TextInput
-            onChange={(e) =>
-              setCredentials((prev) => ({
-                ...prev,
-                confirmPassword: e.target.value,
-              }))
-            }
-            className="mb-[10px]"
-            placeholder="Confirmar senha"
-            type="password"
-          />
+          <div className="relative">
+            <TextInput
+              onChange={(e) =>
+                setCredentials((prev) => ({
+                  ...prev,
+                  confirmPassword: e.target.value,
+                }))
+              }
+              className="mb-[10px] w-full"
+              placeholder="Confirmar senha"
+              type={showConfirmPassword ? "text" : "password"}
+            />
+            <span
+              className="absolute top-[30%] right-[15px] cursor-pointer"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+            >
+              {showConfirmPassword ? (
+                <AiOutlineEye size={20} />
+              ) : (
+                <AiOutlineEyeInvisible size={20} />
+              )}
+            </span>
+          </div>
 
           <button
             disabled={isLoading}
