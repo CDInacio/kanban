@@ -4,21 +4,26 @@ import { CredentialsI } from "@/@types/auth";
 import TextInput from "@/components/Forms/TextInput";
 import Card from "@/components/Surfaces/Card";
 import useSignup from "@/queries/useSignup";
-import { FormEvent, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const passwordRegex = /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/;
 const usernameRegex = /^[a-zA-Z_]+$/;
 
 const Signup = () => {
-  const { mutate, data } = useSignup();
+  const router = useRouter();
+  const { mutate, data, isLoading, isError } = useSignup();
   const [credentials, setCredentials] = useState<CredentialsI>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  console.log(isLoading, data);
   const validateErrors = () => {
     let errors: any = {};
 
@@ -58,7 +63,35 @@ const Signup = () => {
     });
   };
 
-  console.log();
+  useEffect(() => {
+    if (data?.status === 200) {
+      toast.success(data?.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setTimeout(() => {
+        router.push("/signin");
+      }, 2000);
+      return;
+    }
+
+    toast.error(data?.message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }, [data]);
+
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
       <Card className="w-[600px]">
@@ -111,7 +144,14 @@ const Signup = () => {
             type="password"
           />
 
-          <button className="bg-neutral-800 py-[10px] rounded-sm text-white hover:bg-neutral-900 transition ease-out duration-300">
+          <button
+            disabled={isLoading}
+            className={` ${
+              isLoading
+                ? "bg-neutral-400"
+                : "bg-neutral-800 hover:bg-neutral-900"
+            } py-[10px] rounded-sm text-white  transition ease-out duration-300`}
+          >
             Enviar
           </button>
         </form>
@@ -122,7 +162,7 @@ const Signup = () => {
           </span>
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
-        <div>
+        <>
           <div className="mb-[10px] flex bg-blue-700 hover:bg-blue-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]">
             <FaFacebookF size={25} />
             <span className="ml-[10px]">Entrar com Facebook</span>
@@ -134,7 +174,14 @@ const Signup = () => {
             <FcGoogle size={25} />
             <span className="ml-[10px]">Entrar com Google</span>
           </div>
+        </>
+        <div className="mt-[100px] flex justify-center">
+          <p className="text-neutral-600">Já possui uma conta?</p>
+          <Link href="/signin" className="ml-[5px] text-neutral-900 font-bold">
+            Entre aqui
+          </Link>
         </div>
+        <ToastContainer />
       </Card>
     </div>
   );

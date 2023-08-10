@@ -2,6 +2,7 @@
 import TextInput from "@/components/Forms/TextInput";
 import Card from "@/components/Surfaces/Card";
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
@@ -74,7 +75,7 @@ const Signin = () => {
           <span className="flex-shrink mx-4 text-gray-400">ou entre com</span>
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
-        <div>
+        <>
           <div className="mb-[10px] flex bg-blue-700 hover:bg-blue-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]">
             <FaFacebookF size={25} />
             <span className="ml-[10px]">Entrar com Facebook</span>
@@ -86,6 +87,12 @@ const Signin = () => {
             <FcGoogle size={25} />
             <span className="ml-[10px]">Entrar com Google</span>
           </div>
+        </>
+        <div className="mt-[100px] flex justify-center">
+          <p className="text-neutral-600">Não possui uma conta?</p>
+          <Link href="/signup" className="ml-[5px] text-neutral-900 font-bold">
+            Cadastre-se
+          </Link>
         </div>
       </Card>
     </div>
