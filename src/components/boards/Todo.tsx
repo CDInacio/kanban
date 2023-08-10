@@ -20,7 +20,10 @@ const Todo = () => {
 
   return (
     <div className="flex-1">
-      <h2 className="text-2xl font-bold text-slate-800">A Fazer</h2>
+      <div className="flex items-center font-bold">
+        <h2 className="text-2xl text-slate-800">A Fazer</h2>
+        <h2 className="text-lg ml-[10px] text-slate-500">{todo.length}</h2>
+      </div>
       {todo?.length !== 0 && (
         <Card>
           {todo?.map((item, i) => (
@@ -33,6 +36,7 @@ const Todo = () => {
               priority={item.priority}
               createdAt={item.createdAt}
               description={item.description}
+              comments={item.comments}
             />
           ))}
         </Card>

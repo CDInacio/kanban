@@ -7,7 +7,6 @@ import TaskItem from "./TaskItem";
 const Doing = () => {
   const [doing, setDoing] = useState<Itask[]>([]);
   const { data } = useGetTasks();
-  console.log(data);
 
   useEffect(() => {
     const doing = data?.data.filter((task: any) => {

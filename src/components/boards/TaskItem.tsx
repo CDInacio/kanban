@@ -20,6 +20,7 @@ const TaskItem = ({
   subTasks,
   createdAt,
   responsable,
+  comments,
 }: Itask) => {
   const { mutate } = useRemoveTask();
   const { data } = useGetUsers();
@@ -117,6 +118,7 @@ const TaskItem = ({
             responsable={responsable}
             subTasks={subTasks}
             priority={priority}
+            comments={comments}
           />
         </>
       )}
