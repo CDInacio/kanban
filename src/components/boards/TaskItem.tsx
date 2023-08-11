@@ -6,12 +6,14 @@ import { Itask } from "@/@types/task";
 import { IUser } from "@/@types/user";
 import useGetUsers from "@/queries/useGetUsers";
 import useRemoveTask from "@/queries/useRemoveTask";
+
+import { BiDotsVerticalRounded } from "react-icons/bi";
 import {
-  BiCalendarAlt,
-  BiComment,
-  BiCommentDetail,
-  BiDotsVerticalRounded,
-} from "react-icons/bi";
+  TbCalendarTime,
+  TbClipboard,
+  TbClipboardText,
+  TbSubtask,
+} from "react-icons/tb";
 import Avatar from "../Data Display/Avatar";
 import Badge from "../Data Display/Badge";
 import Tooltip from "../Data Display/ToolTip";
@@ -84,26 +86,20 @@ const TaskItem = ({
         >
           {title}
         </h4>
-        {subTasks && (
-          <>
-            <h5 className="font-semibold text-lg mt-[20px]">Subtarefas</h5>
-            <ul>
-              {subTasks?.map((el: any, i) => (
-                <li className="text-neutral-400" key={el + i}>
-                  - {el.text}
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
+        {/* {subTasks && (
+          <div className="flex items-center  mt-[20px]">
+            <h5 className="text-lg font-semibold ">Subtarefas</h5>
+            <p className="ml-[10px]">{subTasks.length}</p>
+          </div>
+        )} */}
         <div className="flex items-center justify-between mt-[20px]">
           <div className="flex items-center justify-between rounded">
-            <BiCalendarAlt size={20} />
+            <TbCalendarTime size={20} />
             <p className="text-neutral-400 ml-[5px]">
               {moment(deadline).format("D MMM")}
             </p>
           </div>
-          <div className="flex items-center gap-[20px]">
+          <div className="flex items-center">
             {responsable && (
               <Tooltip text={userData?.name}>
                 <Avatar
@@ -114,16 +110,32 @@ const TaskItem = ({
               </Tooltip>
             )}
             <div className="flex items-center">
-              <span className="mr-[10px]">
-                {comments ? comments.length : 0}
-              </span>
-              <span className="cursor-pointer">
-                {comments ? (
-                  <BiCommentDetail size={20} />
-                ) : (
-                  <BiComment size={20} />
-                )}
-              </span>
+              <Tooltip text="Comentários">
+                <div className="flex items-center">
+                  <span className="ml-[5px] text-neutral-900">
+                    {comments ? comments.length : 0}
+                  </span>
+                  <span className="cursor-pointer">
+                    {comments ? (
+                      <TbClipboardText color="black" size={20} />
+                    ) : (
+                      <TbClipboard color="black" size={20} />
+                    )}
+                  </span>
+                </div>
+              </Tooltip>
+              {subTasks && (
+                <Tooltip text="Subtarefas">
+                  <div className="flex items-center">
+                    <span className="ml-[5px] text-neutral-900">
+                      {subTasks.length}
+                    </span>
+                    <span>
+                      <TbSubtask color="black" size={20} />
+                    </span>
+                  </div>
+                </Tooltip>
+              )}
             </div>
           </div>
         </div>
