@@ -1,8 +1,7 @@
 "use client";
 
-import { Itask } from "@/@types/task";
+import { TaskI } from "@/@types/task";
 import { IUser } from "@/@types/user";
-import { isObjectEmpty } from "@/helpers/isEmpty";
 import useAddTask from "@/queries/useAddTask";
 import useGetUsers from "@/queries/useGetUsers";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { IoIosClose } from "react-icons/io";
 import "react-tagsinput/react-tagsinput.css";
+import { ToastContainer, toast } from "react-toastify";
 import TextInput from "../Forms/TextInput";
 import Subtask from "../SubTasks/Subtask";
 import Modal from "../Utils/Modal";
@@ -26,7 +26,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
   const [deadline, setDeadline] = useState(new Date());
   const [select, setSelect] = useState<boolean>(false);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
-  const [task, setTask] = useState<Itask>({
+  const [task, setTask] = useState<TaskI>({
     title: "",
     description: "",
   });
@@ -39,7 +39,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
   const [subTasks, setSubTask] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
   const { data } = useGetUsers();
-  const { mutate } = useAddTask();
+  const { mutate, isLoading, isSuccess } = useAddTask();
 
   const handleAdd = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -70,17 +70,6 @@ const Popover = ({ handleToggle }: PopoverProps) => {
     setTags((prev) => prev.filter((tag) => tag !== tag));
   };
 
-  // useEffect(() => {
-  //   if (tags.length !== 0) setTask((prev) => ({ ...prev, tags }));
-  //   if (subTasks.length !== 0) setTask((prev) => ({ ...prev, subTasks }));
-  //   if (select) {
-  //     setTask((prev) => ({
-  //       ...prev,
-  //       deadline,
-  //     }));
-  //   }
-  // }, [tags, subTasks, deadline]);
-
   const handleAddTask = () => {
     let newTask = {
       ...task,
@@ -97,17 +86,28 @@ const Popover = ({ handleToggle }: PopoverProps) => {
     if (select) {
       newTask.deadline = deadline;
     }
+
     mutate(newTask);
-    // handleToggle();
+
+    handleToggle();
+    toast.error("Tarefa criada com sucesso!", {
+      position: "top-right",
+      autoClose: 10000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const handleCancel = () => {
-    if (!isObjectEmpty(task)) {
-      if (confirm("Deseja cancelar? Os dados serão perdidos.")) {
-        handleToggle();
-      }
+    const res = confirm("Tem certeza que deseja cancelar?");
+    if (res === true) {
+      handleToggle();
+    } else {
+      return;
     }
-    handleToggle();
   };
 
   return (
@@ -312,12 +312,16 @@ const Popover = ({ handleToggle }: PopoverProps) => {
             </div>
             <div className="flex gap-[20px]">
               <button
-                className="bg-blue-500 hover:bg-blue-600 w-[100px] py-[5px]  rounded text-white transition ease-out duration-300"
+                disabled={isLoading}
+                className={` ${
+                  isLoading ? "bg-blue-200" : "bg-blue-500 hover:bg-blue-600 "
+                } w-[100px] py-[5px]  rounded text-white transition ease-out duration-300`}
                 onClick={handleAddTask}
               >
                 Criar
               </button>
               <button
+                disabled={isLoading}
                 className="bg-red-500  hover:bg-red-600 w-[100px] py-[5px]  rounded text-white transition ease-out duration-300s"
                 onClick={handleCancel}
               >
@@ -337,6 +341,7 @@ const Popover = ({ handleToggle }: PopoverProps) => {
           </>
         )}
       </Modal>
+      <ToastContainer />
     </>
   );
 };

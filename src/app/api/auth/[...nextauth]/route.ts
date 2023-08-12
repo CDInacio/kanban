@@ -1,14 +1,13 @@
 import connectToDatabase from "@/lib/db";
 import bcrypt from "bcrypt";
+
 import type { NextAuthOptions } from "next-auth";
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
-export const OPTIONS: NextAuthOptions = {
-    session: {
-        strategy: 'jwt',
-    },
+export const authOptions: NextAuthOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             type: 'credentials',
@@ -16,26 +15,14 @@ export const OPTIONS: NextAuthOptions = {
             authorize: async (credentials, req) => {
                 const { email, password } = credentials as { email: string, password: string }
 
-                try {
-                    const db = await connectToDatabase()
-                    const user = await db.collection('users').findOne({ email: email })
-                    if (user) {
-                        const passwordMatch = await bcrypt.compare(password, user.password)
-                        if (passwordMatch) {
-                            return user
-                        }
-                    }
-                    return null
-                } catch (error) {
-
+                const db = await connectToDatabase()
+                const user = await db.collection('users').findOne({ email: email })
+                const passwordMatch = await bcrypt.compare(password, user.password)
+                if (!passwordMatch) {
+                    throw new Error('Password does not match')
                 }
+                return user
 
-                return {
-                    id: "1234",
-                    name: "John Doe",
-                    email: "john@gmail.com",
-                    role: "admin",
-                }
             }
         }),
         GoogleProvider({
@@ -43,6 +30,9 @@ export const OPTIONS: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ""
         })
     ],
+    session: {
+        strategy: 'jwt',
+    },
     callbacks: {
         async signIn({ profile }) {
             try {
@@ -62,11 +52,21 @@ export const OPTIONS: NextAuthOptions = {
                 console.log(error)
                 return false
             }
+        },
+        jwt: async ({ token, user }) => {
+            user && (token.user = user)
+            return token
+        },
+        session: async ({ session, token }) => {
+            const user = token.user as any
+            session.user = user
+            return session
         }
+
     }
 }
 
-const handler = NextAuth(OPTIONS)
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST };
 

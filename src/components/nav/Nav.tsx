@@ -20,13 +20,15 @@ const Nav = () => {
   const togglePopover = () => {
     setIsOpen(!isOpen);
   };
+
   const handleOpenUserMenu = () => {
     setDropdown((prev) => !prev);
   };
-  const [data, setData] = useState<any>([1]);
+
   const handleSigIn = () => {
     signIn();
   };
+
   const handleSigOut = () => {
     signOut();
   };

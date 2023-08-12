@@ -1,4 +1,4 @@
-export interface Itask {
+export interface TaskI {
     _id?: string;
     title: string;
     description?: string;

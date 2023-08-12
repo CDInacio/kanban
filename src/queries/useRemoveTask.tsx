@@ -7,7 +7,8 @@ const removeTask = async (id: string | undefined) => {
 
 const useRemoveTask = () => {
   const queryClient = useQueryClient();
-  return useMutation(removeTask, {
+
+  return useMutation((id: string | undefined) => removeTask(id), {
     onSuccess: () => {
       queryClient.invalidateQueries("tasks");
     },

@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import type { Metadata } from "next";
 
-import { TaskContextProvider } from "@/context/taskContext";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
@@ -25,7 +24,7 @@ export default function RootLayout({
       <body>
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
-            <TaskContextProvider>{children}</TaskContextProvider>
+            {children}
           </QueryClientProvider>
         </SessionProvider>
       </body>

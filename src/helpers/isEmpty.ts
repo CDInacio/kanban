@@ -1,5 +1,5 @@
-import { Itask } from "@/@types/task";
+import { TaskI } from "@/@types/task";
 
-export const isObjectEmpty = (obj: Itask | Object) => {
+export const isObjectEmpty = (obj: TaskI | Object) => {
     return Object.keys(obj).length === 0;
 }

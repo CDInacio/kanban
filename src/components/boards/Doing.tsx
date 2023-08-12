@@ -1,11 +1,14 @@
-import { Itask } from "@/@types/task";
-import useGetTasks from "@/queries/usegetTasks";
+"use client";
+
+import { TaskI } from "@/@types/task";
+import useGetTasks from "@/queries/useGetTasks";
 import { useEffect, useState } from "react";
 import Card from "../Surfaces/Card";
 import TaskItem from "./TaskItem";
 
 const Doing = () => {
-  const [doing, setDoing] = useState<Itask[]>([]);
+  const [doing, setDoing] = useState<TaskI[]>([]);
+
   const { data } = useGetTasks();
 
   useEffect(() => {
@@ -22,16 +25,17 @@ const Doing = () => {
       <h2 className="text-2xl font-bold text-slate-800">Fazendo</h2>
       {doing?.length !== 0 && (
         <Card>
-          {doing?.map((item, i) => (
+          {doing?.map((item: TaskI, i: number) => (
             <TaskItem
+              key={item._id}
               _id={item._id}
-              key={i}
               title={item.title}
               subTasks={item.subTasks}
               responsable={item.responsable}
               priority={item.priority}
               createdAt={item.createdAt}
               description={item.description}
+              deadline={item.deadline}
             />
           ))}
         </Card>

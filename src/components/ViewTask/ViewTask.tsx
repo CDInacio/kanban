@@ -1,5 +1,5 @@
 "use client";
-import { CommentI, IsubTask, Itask } from "@/@types/task";
+import { CommentI, IsubTask, TaskI } from "@/@types/task";
 import useAddComment from "@/queries/useAddComment";
 import useCompleteTask from "@/queries/useCompleteTask";
 import moment from "moment";
@@ -11,7 +11,7 @@ import Devider from "../Data Display/Devider";
 import Subtask from "../SubTasks/Subtask";
 import Modal from "../Utils/Modal";
 
-type ViewTaskProps = Itask & {
+type ViewTaskProps = TaskI & {
   handleToggle: () => void;
 };
 
@@ -36,6 +36,7 @@ const ViewTask = ({
   const { data: session } = useSession();
   const [comment, setComment] = useState<string>("");
   const [mode, setMode] = useState<"details" | "subtask">("details");
+
   const { mutate: taskMutation } = useCompleteTask();
   const { mutate: commentMutation, isLoading } = useAddComment();
 
@@ -64,8 +65,6 @@ const ViewTask = ({
   const doneCount = subTasks?.filter(
     (sub: IsubTask) => sub.done === true
   ).length;
-
-  console.log(doneCount);
 
   return (
     <Modal handleToggle={handleToggle}>
@@ -130,11 +129,15 @@ const ViewTask = ({
                 </button>
               </div>
             </div>
-            <div className="mt-[20px] max-h-[200px] overflow-y-scroll">
+            <div className="mt-[20px] max-h-[230px] overflow-y-scroll p-[5px]">
               {comments?.map((comment: CommentI) => (
-                <div key={comment.id} className="p-3 ">
-                  <div className="flex mb-[20px] ">
-                    <Avatar image={comment.author.image} alt="user image" />
+                <div key={comment.id} className="">
+                  <div className="flex mb-[20px] items-start">
+                    <img
+                      src={comment.author.image ?? ""}
+                      alt=""
+                      className="object-cover w-[40px]  h-[40px] rounded-full"
+                    />
                     <div className="flex flex-col ml-[20px] ">
                       <h5 className="text-xl font-bold">
                         {comment.author.name}

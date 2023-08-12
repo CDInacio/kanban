@@ -19,7 +19,11 @@ const Avatar = ({ image, alt, className, onClick }: AvatarProps) => {
         className
       )}
     >
-      {image ? <img src={image ?? ""} alt={alt} /> : <FaUserAlt size={30} />}
+      {image ? (
+        <img className="object-cover" src={image ?? ""} alt={alt} />
+      ) : (
+        <FaUserAlt size={30} />
+      )}
     </div>
   );
 };

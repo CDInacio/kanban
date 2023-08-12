@@ -1,25 +1,16 @@
-"use client";
 import Boards from "@/components/boards/Boards";
 import Nav from "@/components/nav/Nav";
-// import useGetTasks from "@/queries/usegetTasks";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-const Home = () => {
-  const router = useRouter();
-  const { data: session, status } = useSession();
-  // const { data } = useGetTasks();
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/signin");
-    }
-  }, [status]);
+const Home = async () => {
+  const session = await getServerSession(authOptions);
 
-  const handleLogout = () => {
-    signOut();
-  };
+  if (!session) {
+    redirect("/signin");
+  }
 
   return (
     <>
