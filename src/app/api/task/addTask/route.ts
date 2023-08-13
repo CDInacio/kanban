@@ -7,7 +7,7 @@ export async function POST(req: Request, res: Response) {
     try {
         const db = await connectToDatabase()
         const response = await db.collection('tasks').insertOne(task)
-        return NextResponse.json(response)
+        return NextResponse.json({ message: 'Task created successfully' })
     } catch (error) {
         return console.log(error)
     }

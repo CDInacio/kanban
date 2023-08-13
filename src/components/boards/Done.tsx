@@ -1,8 +1,8 @@
 "use client";
 
 import { TaskI } from "@/@types/task";
-import useGetTasks from "@/queries/useGetTasks";
 import { useEffect, useState } from "react";
+import useGetTasks from "../../queries/useGetTasks";
 import Card from "../Surfaces/Card";
 import TaskItem from "./TaskItem";
 

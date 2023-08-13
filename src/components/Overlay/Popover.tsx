@@ -36,10 +36,10 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
     description: "",
   });
 
-  const { isError, isSuccess, message } = useFeedbackContext();
+  const { setMessage } = useFeedbackContext();
 
   const { data: users } = useGetUsers();
-  const { mutate: addTaskMutation, isLoading, data } = useAddTask();
+  const { mutate: addTaskMutation, isLoading, isSuccess } = useAddTask();
   const { mutate: updateTaskMutation } = useUpdateTask();
 
   useEffect(() => {
@@ -104,13 +104,12 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
 
     if (!isEditing) {
       addTaskMutation(newTask);
-      console.log(data);
+      setMessage("Tarefa criada com sucesso!");
     } else {
       updateTaskMutation(newTask);
     }
     handleToggle();
   };
-
   const handleCancel = () => {
     const res = confirm("Tem certeza que deseja cancelar?");
     if (res === true) {

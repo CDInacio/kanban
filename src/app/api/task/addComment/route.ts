@@ -29,7 +29,7 @@ export async function POST(req: Request, res: Response) {
             }
         })
 
-        return NextResponse.json({ message: 'Task created successfully' })
+        return NextResponse.json({ message: 'Comment created successfully' })
     } catch (error) {
         return console.log(error)
     }
