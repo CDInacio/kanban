@@ -15,7 +15,6 @@ const useAddTask = () => {
   return useMutation(addTask, {
     onSuccess: () => {
       queryClient.invalidateQueries("tasks");
-      return "success";
     },
   });
 };

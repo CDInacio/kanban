@@ -38,7 +38,7 @@ const ViewTask = ({
   const [mode, setMode] = useState<"details" | "subtask">("details");
 
   const { mutate: taskMutation } = useCompleteTask();
-  const { mutate: commentMutation, isLoading } = useAddComment();
+  const { mutate: commentMutation, isLoading, isSuccess } = useAddComment();
 
   const handleAddComment = () => {
     let newComment: CommentI = {
@@ -61,7 +61,7 @@ const ViewTask = ({
     };
     taskMutation(data);
   };
-
+  console.log(isSuccess);
   const doneCount = subTasks?.filter(
     (sub: IsubTask) => sub.done === true
   ).length;
