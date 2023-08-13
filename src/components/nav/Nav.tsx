@@ -45,8 +45,11 @@ const Nav = () => {
             />
             {dropDown && (
               <div className="absolute bg-white w-[200px] shadow-sm">
-                {settings.map((setting) => (
-                  <div className="py-[10px] px-[20px] hover:bg-neutral-100 transition ease-out duration-300 cursor-pointer">
+                {settings.map((setting, i) => (
+                  <div
+                    key={i}
+                    className="py-[10px] px-[20px] hover:bg-neutral-100 transition ease-out duration-300 cursor-pointer"
+                  >
                     <span
                       onClick={setting === "Sair" ? handleSigOut : handleSigIn}
                     >
