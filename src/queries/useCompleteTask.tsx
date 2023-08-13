@@ -1,11 +1,12 @@
 "use client";
 
-import api from "@/app/services/api";
 import { useMutation, useQueryClient } from "react-query";
 
 const completeTask = async (data: any) => {
-  const response = await api.put(`task/completeTask/`, { data });
-  return response;
+  await fetch("http://localhost:3000/api/task/completeTask", {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
 };
 
 const useCompleteTask = () => {

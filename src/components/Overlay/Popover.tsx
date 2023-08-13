@@ -4,6 +4,7 @@ import { TaskI } from "@/@types/task";
 import { IUser } from "@/@types/user";
 import { useFeedbackContext } from "@/context/feedbackContext";
 import useAddTask from "@/queries/useAddTask";
+import useCompleteTask from "@/queries/useCompleteTask";
 import useGetUsers from "@/queries/useGetUsers";
 import useUpdateTask from "@/queries/useUpdateTask";
 import { useEffect, useState } from "react";
@@ -39,8 +40,9 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
   const { setMessage } = useFeedbackContext();
 
   const { data: users } = useGetUsers();
-  const { mutate: addTaskMutation, isLoading, isSuccess } = useAddTask();
+  const { mutate: addTaskMutation, isLoading, status: st } = useAddTask();
   const { mutate: updateTaskMutation } = useUpdateTask();
+  const { mutate: completeTaskMutation } = useCompleteTask();
 
   useEffect(() => {
     if (isEditing) {
@@ -117,6 +119,7 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
       handleToggle();
     }
   };
+
   const handleCancel = () => {
     const res = confirm("Tem certeza que deseja cancelar?");
     if (res === true) {
@@ -125,6 +128,15 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
       return;
     }
   };
+
+  const handleCompleteTask = (subId: number, taskId: string | undefined) => {
+    const data = {
+      subId,
+      taskId,
+    };
+    completeTaskMutation(data);
+  };
+
   return (
     <>
       <Modal handleToggle={handleToggle}>
@@ -157,7 +169,7 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
               <div className="w-2/3">
                 <div className="flex flex-col">
                   <label htmlFor="title" className="font-semibold">
-                    Titulo *
+                    Titulo
                   </label>
                   <TextInput
                     onChange={(e) =>
@@ -171,7 +183,7 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="description" className="font-semibold">
-                    Descrição *
+                    Descrição
                   </label>
                   <textarea
                     value={task?.description}
@@ -190,7 +202,7 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
                 <label htmlFor="description " className="font-semibold">
                   Tags
                 </label>
-                <div className="flex flex-wrap border-[1px] border-neutral-200 rounded-md items-center">
+                <div className="flex flex-wrap border-[1px] border-neutral-200 rounded-md items-center  p-[5px]">
                   {tags?.map((tag: any, i) => (
                     <div
                       key={tag + i}
@@ -335,7 +347,7 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
                 } w-[100px] py-[5px]  rounded text-white transition ease-out duration-300`}
                 onClick={handleAddTask}
               >
-                Criar
+                {isEditing ? "Editar" : "Adicionar"}
               </button>
               <button
                 disabled={isLoading}
@@ -353,7 +365,12 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
               className="w-full"
             />
             {subTasks?.map((sub: any, i) => (
-              <Subtask key={i} text={sub.text} />
+              <Subtask
+                key={sub.id}
+                done={sub.done}
+                handleCompleteTask={() => handleCompleteTask(sub.id, props._id)}
+                text={sub.text}
+              />
             ))}
           </>
         )}

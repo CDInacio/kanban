@@ -13,6 +13,7 @@ import { FaGithub, FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Logo from "../Logo/Logo";
 
 const passwordRegex = /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/;
 const usernameRegex = /^[a-zA-Z_]+$/;
@@ -116,6 +117,7 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
+      <Logo className="absolute top-[50px] left-[50px]" />
       <Card className="w-[600px]">
         <h2 className="text-3xl font-bold text-neutral-800 text-center mb-[40px]">
           Cadastro
@@ -203,7 +205,7 @@ const Signup = () => {
                 : "bg-neutral-800 hover:bg-neutral-900"
             } py-[10px] rounded-sm text-white  transition ease-out duration-300`}
           >
-            Enviar
+            Cadastrar
           </button>
         </form>
         <div className="relative flex items-center py-5">

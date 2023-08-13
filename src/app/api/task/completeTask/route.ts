@@ -2,8 +2,9 @@ import connectToDatabase from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
-    const { data } = await request.json()
+export async function PUT(req: Request, res: Response) {
+    const data = await req.json()
+    console.log(data)
     try {
         const db = await connectToDatabase();
         const taskId = new ObjectId(data.taskId)

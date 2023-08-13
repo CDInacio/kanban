@@ -38,12 +38,7 @@ const ViewTask = ({
   const [mode, setMode] = useState<"details" | "subtask">("details");
 
   const { mutate: taskMutation } = useCompleteTask();
-  const {
-    mutate: commentMutation,
-    isLoading,
-    isSuccess,
-    data,
-  } = useAddComment();
+  const { mutate: commentMutation, isLoading } = useAddComment();
 
   const handleAddComment = () => {
     let newComment: CommentI = {
@@ -61,6 +56,7 @@ const ViewTask = ({
       return;
     }
     commentMutation(newComment);
+    setComment("");
   };
 
   const handleCompleteTask = (subId: number, taskId: string | undefined) => {
@@ -122,6 +118,7 @@ const ViewTask = ({
               <Avatar image={session?.user?.image} alt="user image" />
               <div className="w-[92%] flex flex-col ml-[20px] ">
                 <textarea
+                  value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   className="p-[10px] border-[1px] border-neutral-300 rounded-md  min-h-[150px] focus:border-2 focus:border-neutral-800 transition ease-out duration-300"
                 />

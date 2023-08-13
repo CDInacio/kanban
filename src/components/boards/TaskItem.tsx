@@ -12,6 +12,7 @@ import useRemoveTask from "@/queries/useRemoveTask";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { TbClipboard, TbClipboardText, TbSubtask } from "react-icons/tb";
 
+import { useFeedbackContext } from "@/context/feedbackContext";
 import { MdOutlineTimer } from "react-icons/md";
 import Avatar from "../Data Display/Avatar";
 import Badge from "../Data Display/Badge";
@@ -33,13 +34,13 @@ const TaskItem = ({
   tags,
   status,
 }: TaskI) => {
-  const { mutate } = useRemoveTask();
+  const { mutate, status: st } = useRemoveTask();
   const { data } = useGetUsers();
+  const { setIsLoading } = useFeedbackContext();
   const [isOpen, setIsOpen] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
 
   const [dropDown, setDropdown] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState(false);
 
   const userData = data?.find((user: IUser) => user.email === responsable);
   let orderComments = comments?.sort((a, b) => {
@@ -52,6 +53,7 @@ const TaskItem = ({
 
   const handleDelete = () => {
     mutate(_id);
+    console.log(st);
   };
 
   const togglePopover = () => {
@@ -71,7 +73,7 @@ const TaskItem = ({
     tags,
     status,
   };
-  console.log(tags);
+
   return (
     <>
       <div className="my-[20px]  min-h-[220px] flex flex-col justify-center relative">
