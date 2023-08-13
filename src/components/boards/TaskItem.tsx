@@ -31,13 +31,15 @@ const TaskItem = ({
   comments,
   deadline,
   tags,
+  status,
 }: TaskI) => {
   const { mutate } = useRemoveTask();
   const { data } = useGetUsers();
   const [isOpen, setIsOpen] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
 
   const [dropDown, setDropdown] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const userData = data?.find((user: IUser) => user.email === responsable);
   let orderComments = comments?.sort((a, b) => {
@@ -52,6 +54,23 @@ const TaskItem = ({
     mutate(_id);
   };
 
+  const togglePopover = () => {
+    setShowPopover(!showPopover);
+  };
+
+  let editProps = {
+    _id,
+    title,
+    priority,
+    description,
+    subTasks,
+    createdAt,
+    responsable,
+    comments,
+    deadline,
+    tags,
+    status,
+  };
   return (
     <>
       <div className="my-[20px]  min-h-[220px] flex flex-col justify-center relative">
@@ -68,16 +87,21 @@ const TaskItem = ({
         >
           <BiDotsVerticalRounded size={25} />
           {dropDown && (
-            <div className="absolute  top-[40px] bg-white shadow-sm z-50 ">
-              <div className="py-[10px] px-[20px] flex flex-col gap-5  transition ease-out duration-300 cursor-pointer">
-                <span
-                  className=" hover:bg-neutral-100"
-                  onClick={() => setIsEditing(true)}
+            <div className="absolute bg-white top-[40px] shadow-sm z-50 ">
+              {options.map((opt, i) => (
+                <div
+                  key={`${opt + i}`}
+                  className="py-[10px] px-[20px] hover:bg-neutral-100 transition ease-out duration-300 cursor-pointer"
                 >
-                  Editar
-                </span>
-                <span onClick={handleDelete}>Excluir</span>
-              </div>
+                  <span
+                    onClick={() =>
+                      opt === "editar" ? togglePopover() : handleDelete()
+                    }
+                  >
+                    {opt}
+                  </span>
+                </div>
+              ))}
             </div>
           )}
         </span>
@@ -101,7 +125,7 @@ const TaskItem = ({
         )}
         <div className="flex items-center justify-between mt-[20px]">
           {deadline ? (
-            <div className="flex items-center">
+            <div className="absolute bottom-0 left-0 flex items-center">
               <MdOutlineTimer size={20} />
               <p className="text-neutral-400 ml-[5px]">
                 {moment(deadline).format("D MMM")}
@@ -111,7 +135,7 @@ const TaskItem = ({
             <span />
           )}
           <div className="flex items-center">
-            <div className="flex items-center">
+            <div className="absolute bottom-0 right-0 flex items-center ">
               <Tooltip text="Comentários">
                 <div className="flex items-center">
                   <span className="ml-[5px] text-neutral-900">
@@ -157,7 +181,11 @@ const TaskItem = ({
           />
         </>
       )}
-      {isEditing && <Popover handleToggle={() => {}} />}
+      {showPopover && (
+        <div className="relative">
+          <Popover isEditing handleToggle={togglePopover} {...editProps} />
+        </div>
+      )}
     </>
   );
 };

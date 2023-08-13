@@ -6,8 +6,8 @@ export async function POST(req: Request, res: Response) {
     task.createdAt = new Date().toISOString()
     try {
         const db = await connectToDatabase()
-        await db.collection('tasks').insertOne(task)
-        return NextResponse.json({ message: 'Task created successfully' })
+        const response = await db.collection('tasks').insertOne(task)
+        return NextResponse.json(response)
     } catch (error) {
         return console.log(error)
     }

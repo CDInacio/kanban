@@ -20,7 +20,12 @@ const Avatar = ({ image, alt, className, onClick }: AvatarProps) => {
       )}
     >
       {image ? (
-        <img className="object-cover" src={image ?? ""} alt={alt} />
+        <img
+          className="object-cover"
+          src={image}
+          alt={alt}
+          referrerPolicy="no-referrer"
+        />
       ) : (
         <FaUserAlt size={30} />
       )}

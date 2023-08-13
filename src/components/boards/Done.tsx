@@ -12,7 +12,7 @@ const Done = () => {
   const { data } = useGetTasks();
 
   useEffect(() => {
-    const doing = data?.data.filter((task: any) => {
+    const doing = data?.filter((task: any) => {
       if (task.status === "feito") {
         return task;
       }
@@ -36,6 +36,7 @@ const Done = () => {
               createdAt={item.createdAt}
               description={item.description}
               deadline={item.deadline}
+              status={item.status}
             />
           ))}
         </Card>

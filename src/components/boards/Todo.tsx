@@ -12,12 +12,12 @@ const Todo = () => {
   const { data } = useGetTasks();
 
   useEffect(() => {
-    const doing = data?.data.filter((task: any) => {
+    const todo = data?.filter((task: any) => {
       if (task.status === "fazer" || task.status === undefined) {
         return task;
       }
     });
-    setTodo(doing);
+    setTodo(todo);
   }, [data]);
 
   return (

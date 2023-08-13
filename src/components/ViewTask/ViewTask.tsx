@@ -133,10 +133,9 @@ const ViewTask = ({
               {comments?.map((comment: CommentI) => (
                 <div key={comment.id} className="">
                   <div className="flex mb-[20px] items-start">
-                    <img
-                      src={comment.author.image ?? ""}
-                      alt=""
-                      className="object-cover w-[40px]  h-[40px] rounded-full"
+                    <Avatar
+                      image={comment.author.image}
+                      alt="image of the person who made the comment"
                     />
                     <div className="flex flex-col ml-[20px] ">
                       <h5 className="text-xl font-bold">

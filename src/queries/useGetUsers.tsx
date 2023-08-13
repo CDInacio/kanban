@@ -1,11 +1,14 @@
 "use client";
 
-import api from "@/app/services/api";
 import { useQuery } from "react-query";
 
 const getUsers = async () => {
-  const response = await api.get("user/allUsers");
-  return response.data;
+  const response = await fetch("http://localhost:3000/api/user/allUsers", {
+    next: {
+      revalidate: 60,
+    },
+  });
+  return response.json();
 };
 
 const useGetUsers = () => {

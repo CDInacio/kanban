@@ -1,6 +1,6 @@
 export interface TaskI {
     _id?: string;
-    title: string;
+    title?: string;
     description?: string;
     priority?: string;
     createdAt?: string;
