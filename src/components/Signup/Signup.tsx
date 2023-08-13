@@ -4,11 +4,12 @@ import { CredentialsI } from "@/@types/auth";
 import TextInput from "@/components/Forms/TextInput";
 import Card from "@/components/Surfaces/Card";
 import useSignup from "@/queries/useSignup";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { FaFacebookF } from "react-icons/fa";
+import { FaGithub, FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -108,6 +109,10 @@ const Signup = () => {
       progress: undefined,
     });
   }, [data]);
+
+  const handleLoginWithProvider = (provider: string) => {
+    signIn(provider, { callbackUrl: "/" });
+  };
 
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
@@ -209,16 +214,26 @@ const Signup = () => {
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
         <>
-          <div className="mb-[10px] flex bg-blue-700 hover:bg-blue-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]">
-            <FaFacebookF size={25} />
-            <span className="ml-[10px]">Entrar com Facebook</span>
+          <div
+            onClick={() => handleLoginWithProvider("github")}
+            className="mb-[10px] flex bg-neutral-700 hover:bg-neutral-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]"
+          >
+            <FaGithub size={25} />
+            <span className="ml-[10px]">Cadastrar com Github</span>
           </div>
           <div
-            // onClick={() => handleLogin("google")}
+            onClick={() => handleLoginWithProvider("google")}
             className="flex  text-neutral-600 justify-center items-center rounded-sm border-[1px] border-neutral-300 py-[10px] cursor-pointer hover:bg-neutral-100 transition ease-out duration-300"
           >
             <FcGoogle size={25} />
-            <span className="ml-[10px]">Entrar com Google</span>
+            <span className="ml-[10px]">Cadastrar com Google</span>
+          </div>
+          <div
+            onClick={() => handleLoginWithProvider("twitter")}
+            className="mt-[10px] flex bg-sky-700 hover:bg-sky-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]"
+          >
+            <FaTwitter size={25} />
+            <span className="ml-[10px]">Cadastrar com Twitter</span>
           </div>
         </>
         <div className="mt-[100px] flex justify-center">

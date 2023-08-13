@@ -127,9 +127,11 @@ const TaskItem = ({
           {deadline ? (
             <div className="absolute bottom-0 left-0 flex items-center">
               <MdOutlineTimer size={20} />
-              <p className="text-neutral-400 ml-[5px]">
-                {moment(deadline).format("D MMM")}
-              </p>
+              <Tooltip text="Prazo">
+                <p className="text-neutral-400">
+                  {moment(deadline).format("D MMM")}
+                </p>
+              </Tooltip>
             </div>
           ) : (
             <span />
