@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable */
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { FeedbackContextProvider } from "@/context/feedbackContext";
