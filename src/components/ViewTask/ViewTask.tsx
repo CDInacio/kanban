@@ -56,6 +56,10 @@ const ViewTask = ({
       createdAt: new Date().toISOString(),
       taskId: _id,
     };
+
+    if (!comment) {
+      return;
+    }
     commentMutation(newComment);
   };
 

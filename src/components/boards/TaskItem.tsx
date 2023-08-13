@@ -71,6 +71,7 @@ const TaskItem = ({
     tags,
     status,
   };
+  console.log(tags);
   return (
     <>
       <div className="my-[20px]  min-h-[220px] flex flex-col justify-center relative">
@@ -111,7 +112,13 @@ const TaskItem = ({
         >
           {title}
         </h4>
-
+        <div className="flex">
+          {tags?.map((tag: any, i) => (
+            <p key={tag.id} className="mr-[3px] text-neutral-400">
+              #{tag.text}
+            </p>
+          ))}
+        </div>
         {responsable && (
           <div className="w-fit mt-[15px]">
             <Tooltip text={userData?.name}>
@@ -126,7 +133,7 @@ const TaskItem = ({
         <div className="flex items-center justify-between mt-[20px]">
           {deadline ? (
             <div className="absolute bottom-0 left-0 flex items-center">
-              <MdOutlineTimer size={20} />
+              <MdOutlineTimer color="#737373" size={20} />
               <Tooltip text="Prazo">
                 <p className="text-neutral-400">
                   {moment(deadline).format("D MMM")}
@@ -140,25 +147,25 @@ const TaskItem = ({
             <div className="absolute bottom-0 right-0 flex items-center ">
               <Tooltip text="Comentários">
                 <div className="flex items-center">
-                  <span className="ml-[5px] text-neutral-900">
+                  <span className="ml-[5px] text-neutral-500">
                     {comments ? comments.length : 0}
                   </span>
                   <span className="cursor-pointer">
                     {comments ? (
-                      <TbClipboardText color="black" size={20} />
+                      <TbClipboardText color="#737373" size={20} />
                     ) : (
-                      <TbClipboard color="black" size={20} />
+                      <TbClipboard color="#737373" size={20} />
                     )}
                   </span>
                 </div>
               </Tooltip>
               <Tooltip text="Subtarefas">
                 <div className="flex items-center">
-                  <span className="ml-[5px] text-neutral-900">
+                  <span className="ml-[5px] text-neutral-500">
                     {subTasks ? subTasks.length : 0}
                   </span>
                   <span>
-                    <TbSubtask color="black" size={20} />
+                    <TbSubtask color="#737373" size={20} />
                   </span>
                 </div>
               </Tooltip>

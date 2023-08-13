@@ -9,7 +9,7 @@ import TaskItem from "./TaskItem";
 const Doing = () => {
   const [doing, setDoing] = useState<TaskI[]>([]);
 
-  const { data } = useGetTasks();
+  const { data, isLoading } = useGetTasks();
 
   useEffect(() => {
     const doing = data?.filter((task: any) => {
@@ -22,8 +22,8 @@ const Doing = () => {
 
   return (
     <div className="flex-1 ">
-      <h2 className="text-2xl font-bold text-slate-800">Fazendo</h2>
-      {doing?.length !== 0 && (
+      <h2 className="text-2xl font-bold text-white ">Fazendo</h2>
+      {!isLoading && doing?.length !== 0 && (
         <Card>
           {doing?.map((item: TaskI, i: number) => (
             <TaskItem

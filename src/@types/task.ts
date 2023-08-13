@@ -18,6 +18,11 @@ export interface IsubTask {
     done: boolean;
 }
 
+export interface TagI {
+    id: number;
+    text: string;
+}
+
 export interface CommentI {
     taskId: string | undefined;
     author: {
