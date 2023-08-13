@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 import type { NextAuthOptions } from "next-auth";
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import TwitterProvider from 'next-auth/providers/twitter';
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -28,7 +30,15 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID ?? "",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ""
-        })
+        }),
+        GithubProvider({
+            clientId: process.env.GITHUB_CLIENT_ID ?? "",
+            clientSecret: process.env.GITHUB_CLIENT_SECRET ?? ""
+        }),
+        TwitterProvider({
+            clientId: process.env.TWITTER_CLIENT_ID ?? "",
+            clientSecret: process.env.TWITTER_CLIENT_SECRET ?? ""
+        }),
     ],
     session: {
         strategy: 'jwt',

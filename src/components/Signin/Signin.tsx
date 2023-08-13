@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { FaFacebookF } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 const Signin = () => {
@@ -24,15 +24,15 @@ const Signin = () => {
   const router = useRouter();
 
   const handleLoginWithProvider = (provider: string) => {
-    const res = signIn(provider, { callbackUrl: "/home" });
+    signIn(provider, { callbackUrl: "/" });
   };
 
   const handleLoginWithCredentials = async () => {
-    const res = await signIn("credentials", {
+    await signIn("credentials", {
       email: credentials.email,
       password: credentials.password,
       redirect: true,
-      callbackUrl: "/home",
+      callbackUrl: "/",
     });
   };
 
@@ -88,9 +88,12 @@ const Signin = () => {
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
         <>
-          <div className="mb-[10px] flex bg-blue-700 hover:bg-blue-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]">
-            <FaFacebookF size={25} />
-            <span className="ml-[10px]">Entrar com Facebook</span>
+          <div
+            onClick={() => handleLoginWithProvider("github")}
+            className="mb-[10px] flex bg-neutral-700 hover:bg-neutral-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]"
+          >
+            <FaGithub size={25} />
+            <span className="ml-[10px]">Entrar com Github</span>
           </div>
           <div
             onClick={() => handleLoginWithProvider("google")}
@@ -98,6 +101,13 @@ const Signin = () => {
           >
             <FcGoogle size={25} />
             <span className="ml-[10px]">Entrar com Google</span>
+          </div>
+          <div
+            onClick={() => handleLoginWithProvider("twitter")}
+            className="mt-[10px] flex bg-sky-700 hover:bg-sky-800 transition ease-out duration-300 cursor-pointer text-white justify-center items-center rounded-sm  py-[10px]"
+          >
+            <FaGithub size={25} />
+            <span className="ml-[10px]">Entrar com Twitter</span>
           </div>
         </>
         <div className="mt-[100px] flex justify-center">

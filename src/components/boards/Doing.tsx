@@ -35,8 +35,10 @@ const Doing = () => {
               priority={item.priority}
               createdAt={item.createdAt}
               description={item.description}
+              comments={item.comments}
               deadline={item.deadline}
               status={item.status}
+              tags={item.tags}
             />
           ))}
         </Card>

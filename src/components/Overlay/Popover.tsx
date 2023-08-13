@@ -108,7 +108,14 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
     } else {
       updateTaskMutation(newTask);
     }
-    handleToggle();
+
+    if (!isLoading) {
+      setTask({
+        title: "",
+        description: "",
+      });
+      handleToggle();
+    }
   };
   const handleCancel = () => {
     const res = confirm("Tem certeza que deseja cancelar?");
@@ -118,7 +125,6 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
       return;
     }
   };
-
   return (
     <>
       <Modal handleToggle={handleToggle}>

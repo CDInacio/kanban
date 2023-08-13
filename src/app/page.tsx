@@ -1,31 +1,23 @@
-"use client";
+import Boards from "@/components/boards/Boards";
+import Nav from "@/components/nav/Nav";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
-export default function Home() {
-  const router = useRouter();
-  const { data: session, status } = useSession();
+const Home = async () => {
+  const session = await getServerSession(authOptions);
+  console.log(session);
+  if (!session) {
+    redirect("/signin");
+  }
 
-  const handleSignIn = () => {
-    router.push("/signin");
-  };
-
-  const handleSignOut = () => {
-    signOut();
-  };
-  console.log("first");
   return (
-    <main className="mt-10">
-      {!session ? (
-        <button className="bg-red-400" type="button" onClick={handleSignIn}>
-          entrar
-        </button>
-      ) : (
-        <button className="bg-red-400" onClick={handleSignOut}>
-          sair
-        </button>
-      )}
-    </main>
+    <>
+      <Nav />
+      <Boards />
+    </>
   );
-}
+};
+
+export default Home;
