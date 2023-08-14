@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Logo from "../Logo/Logo";
 
 const passwordRegex = /^(?=.*\d)(?=.*[A-Z])(?=.*\W).+$/;
-const usernameRegex = /^[a-zA-Z_]+$/;
+const usernameRegex = /^[a-zA-Z\s]*$/;
 
 const Signup = () => {
   const router = useRouter();
