@@ -2,7 +2,6 @@
 
 import { TaskI } from "@/@types/task";
 import { IUser } from "@/@types/user";
-import { useFeedbackContext } from "@/context/feedbackContext";
 import useAddTask from "@/queries/useAddTask";
 import useCompleteTask from "@/queries/useCompleteTask";
 import useGetUsers from "@/queries/useGetUsers";
@@ -36,8 +35,6 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
     title: "",
     description: "",
   });
-
-  const { setMessage } = useFeedbackContext();
 
   const { data: users } = useGetUsers();
   const { mutate: addTaskMutation, isLoading, status: st } = useAddTask();
@@ -106,7 +103,6 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
 
     if (!isEditing) {
       addTaskMutation(newTask);
-      setMessage("Tarefa criada com sucesso!");
     } else {
       updateTaskMutation(newTask);
     }
