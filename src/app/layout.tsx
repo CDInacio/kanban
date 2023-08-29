@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import { FeedbackContextProvider } from "@/context/feedbackContext";
 import { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
