@@ -51,7 +51,7 @@ const Popover = ({ handleToggle, isEditing, ...props }: PopoverProps) => {
       if (tags) setTags(tags);
       if (subTasks) setSubTask(subTasks);
     }
-  }, []);
+  }, [isEditing]);
 
   const handleDeadline = (data: any) => {
     setSelect(true);

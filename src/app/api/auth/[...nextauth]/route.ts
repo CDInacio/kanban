@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
                     const newUser = {
                         name: profile?.name,
                         email: profile?.email,
-                        image: profile?.picture,
+                        // image: profile?.picture,
                     }
                     await db.collection('users').insertOne(newUser)
                 }

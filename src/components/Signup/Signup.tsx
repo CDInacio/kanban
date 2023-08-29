@@ -109,7 +109,7 @@ const Signup = () => {
       draggable: true,
       progress: undefined,
     });
-  }, [data]);
+  }, [data, router]);
 
   const handleLoginWithProvider = (provider: string) => {
     signIn(provider, { callbackUrl: "/" });
