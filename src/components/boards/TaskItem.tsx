@@ -12,7 +12,6 @@ import useRemoveTask from "@/queries/useRemoveTask";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { TbClipboard, TbClipboardText, TbSubtask } from "react-icons/tb";
 
-import { useFeedbackContext } from "@/context/feedbackContext";
 import { MdOutlineTimer } from "react-icons/md";
 import Avatar from "../Data Display/Avatar";
 import Badge from "../Data Display/Badge";
@@ -36,7 +35,6 @@ const TaskItem = ({
 }: TaskI) => {
   const { mutate, status: st } = useRemoveTask();
   const { data } = useGetUsers();
-  const { setIsLoading } = useFeedbackContext();
   const [isOpen, setIsOpen] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
 
