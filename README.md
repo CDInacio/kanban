@@ -1,34 +1,119 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🗂️ Kanban
 
-## Getting Started
+Este projeto oferece uma abordagem visual e intuitiva para planejar,
+acompanhar e concluir tarefas, permitindo que você e sua equipe
+maximizem a produtividade e o foco.
 
-First, run the development server:
+------------------------------------------------------------------------
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## 🚀 Tecnologias utilizadas
+
+-   Next.js (TypeScript)\
+-   CSS / Tailwind CSS\
+-   JavaScript\
+-   Git / GitHub (versionamento)\
+-   Vercel (deploy)
+
+------------------------------------------------------------------------
+
+## 📂 Estrutura do projeto
+
+    .
+    ├── public
+    ├── src
+    │   ├── components
+    │   ├── pages / app
+    │   ├── styles
+    │   └── etc.
+    ├── .eslintrc.json
+    ├── next.config.js
+    ├── tailwind.config.js
+    ├── tsconfig.json
+    ├── package.json
+    └── README.md
+
+------------------------------------------------------------------------
+
+## 🛠️ Como executar localmente
+
+1.  Clone o repositório:
+
+    ``` bash
+    git clone https://github.com/CDInacio/kanban.git
+    cd kanban
+    ```
+
+2.  Instale as dependências:
+
+    ``` bash
+    npm install
+    # ou
+    yarn
+    # ou
+    pnpm install
+    ```
+
+3.  Rode em modo de desenvolvimento:
+
+    ``` bash
+    npm run dev
+    # ou
+    yarn dev
+    # ou
+    pnpm dev
+    ```
+
+4.  Abra no navegador:\
+    <http://localhost:3000>
+
+------------------------------------------------------------------------
+
+## 📦 Scripts úteis
+
+-   `dev` --- inicia o servidor de desenvolvimento\
+-   `build` --- cria a versão de produção\
+-   `start` --- executa a build de produção\
+-   Outros comandos como lint, test (se aplicável)
+
+
+------------------------------------------------------------------------
+
+## 🎯 Funcionalidades
+
+-   Interface de quadro estilo Kanban para organização de tarefas\
+-   Arrastar e soltar (drag & drop) entre colunas\
+-   Criação, edição e exclusão de cartões/tarefas\
+-   Persistência de dados 
+
+------------------------------------------------------------------------
+
+## 🧪 Testes e qualidade de código
+
+Se houver testes, aqui você pode explicar como rodá-los, por exemplo:
+
+``` bash
+npm run test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Também mencione o uso de ESLint, Prettier ou outras ferramentas de
+linting/formatação.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+------------------------------------------------------------------------
 
-## Learn More
+## 👤 Autor
 
-To learn more about Next.js, take a look at the following resources:
+Cláudio Dantas --- [GitHub](https://github.com/CDInacio) ---
+[Portfólio](https://claudiodantas.vercel.app/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+------------------------------------------------------------------------
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 🚧 Considerações Finais
 
-## Deploy on Vercel
+Este projeto serve tanto como ferramenta prática para gerenciamento de
+tarefas quanto como demonstração de habilidades em **Next.js**,
+**TypeScript**, **CSS modular**, **design responsivo** e boas práticas
+de frontend.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Sinta-se livre para adaptar, expandir e evoluir o projeto conforme suas
+necessidades ou ideias futuras.
